@@ -54,11 +54,9 @@ public class Client {
                 print("Попытка переподключиться");
             attempts++;
             socket = new Socket(serverHost, serverPort);
-            print("Получаю разрешение на чтение и запись");
+            print("Сервер найден, встаю в очередь");
             serverWriter = new ObjectOutputStream(socket.getOutputStream());
-            print("Получено разрешение на запись");
             serverReader = new ObjectInputStream(socket.getInputStream());
-            print("Получено разрешение на чтение");
         } catch (UnknownHostException e) {
             printErr("Неизвестный хост: " + serverHost + "\n");
             return false;

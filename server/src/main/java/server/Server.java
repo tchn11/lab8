@@ -1,16 +1,14 @@
 package server;
 
-import messages.AnswerMsg;
-import messages.CommandMsg;
-import messages.Status;
 import server.commands.CommandManager;
+import server.connection.ConnectionHandler;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Main class for server, connect and send
@@ -19,15 +17,17 @@ public class Server {
     private int port;
     private int timeout;
     private ServerSocketChannel socketChannel;
-    private SocketChannel clientChanel;
     private CommandManager commandManager;
-    private ObjectInputStream ois;
-    private ObjectOutputStream ous;
+    private int maxUsers;
+    private ExecutorService cachedThreadPool;
 
-    public Server(int in_port, int in_timeout, CommandManager com){
+    public Server(int in_port, int in_timeout, CommandManager com, int MaxUsers){
         port = in_port;
         timeout = in_timeout;
         commandManager = com;
+        maxUsers = MaxUsers;
+
+        cachedThreadPool = Executors.newCachedThreadPool();
     }
 
     /**
@@ -67,70 +67,19 @@ public class Server {
     /**
      * Wait for client and set connection with him
      */
-    private void startTransmission(){
+    private SocketChannel startTransmission(){
+        SocketChannel clientChanel;
         try {
             Main.logger.info("Вхожу в ожидание соединения");
             clientChanel = socketChannel.accept();
-            Main.logger.info("Получаю разреение на чтение и запись");
-            ois = new ObjectInputStream(clientChanel.socket().getInputStream());
-            ous = new ObjectOutputStream(clientChanel.socket().getOutputStream());
-            Main.logger.info("Разрешение на чтение и запись получено");
             Main.logger.info("Уcтановлено соединение с клиентом");
         } catch (IOException exception) {
             Main.logger.error("Ошибка подключения к клиенту");
+            return null;
         }
+        return clientChanel;
     }
 
-    /**
-     * Read object from client
-     * @return Object witch was send
-     */
-    private Object readObj(){
-        try{
-            Main.logger.info("Начинаю чтение объекта");
-            Object obj = ois.readObject();
-            Main.logger.info("Объект получен");
-            return obj;
-        } catch (IOException exception) {
-            Main.logger.error("Разрыв соеденения");
-        } catch (ClassNotFoundException exception) {
-            Main.logger.error("Ошибка получения объекта");
-        }
-        return null;
-    }
-
-    /**
-     * Send answer to user
-     * @param answerMsg Message
-     * @return All right or not
-     */
-    private boolean sendAnswer(AnswerMsg answerMsg){
-        try{
-            Main.logger.info("Отправляю ответ: " + answerMsg.getMessage());
-            ous.writeObject(answerMsg);
-            ous.flush();
-            Main.logger.info("Ответ отправлен");
-            return true;
-        } catch (IOException exception) {
-            Main.logger.error("Разрыв соеденения");
-        }
-        return false;
-    }
-
-    /**
-     * End transmission with current user if error happened (need wait next)
-     */
-    private void endTransmission(){
-        try {
-            Main.logger.info("Закрываю соединение");
-            clientChanel.close();
-            ois.close();
-            ous.close();
-            Main.logger.info("Соединение успешно закрыто");
-        } catch (IOException exception) {
-            Main.logger.error("Ошибка закрытия соеденения");
-        }
-    }
 
     /**
      * Main run class, read client, execute and answer
@@ -139,35 +88,31 @@ public class Server {
         if (!openSocket())
             return;
         boolean working = true;
-        boolean reconect = true;
         while (working) {
-            if (reconect){
-                startTransmission();
-                reconect = false;
+            if (ConnectionHandler.WorksNow >= 10){
+                Main.logger.error("Максимум соединений!!");
+                while(ConnectionHandler.WorksNow >= 10){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Main.logger.error("Ошибка ожидания!");
+                    }
+                }
             }
-            Object obj = readObj();
-            if (obj == null){
-                endTransmission();
-                reconect = true;
-                continue;
+            SocketChannel client = startTransmission();
+            if (client == null)
+                Main.logger.error("Ошибка");
+            else
+                cachedThreadPool.submit(new ConnectionHandler(client, commandManager));
+
+            Main.logger.info("Запущен " + ConnectionHandler.WorksNow + " поток");
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Main.logger.error("Ошибка ожидания!");
             }
-            CommandMsg commandMsg = (CommandMsg) obj;
-            AnswerMsg answerMsg = new AnswerMsg();
-            commandManager.executeCommand(commandMsg, answerMsg);
-            if (!sendAnswer(answerMsg)){
-                endTransmission();
-                reconect = true;
-                continue;
-            }
-            if (answerMsg.getStatus() == Status.EXIT)
-                working = false;
         }
         Main.logger.info("Конец завершение работы");
-        Main.logger.info("Сохранение коллекции");
-        AnswerMsg answerMsg = new AnswerMsg();
-        commandManager.executeCommand(new CommandMsg("save", null, null), answerMsg);
-        Main.logger.info("Сохранание прошло со следующим сообщением: " + answerMsg.getMessage().trim());
-        endTransmission();
         closeSocket();
     }
 }

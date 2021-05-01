@@ -8,6 +8,7 @@ import server.file.FileManager;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
+import java.net.PortUnreachableException;
 
 /**
  * Main class for server
@@ -17,6 +18,7 @@ public class Main {
     public static Logger logger = LogManager.getLogger("ServerLogger");
     public static final int PORT = 1821;
     public static final int CONNECTION_TIMEOUT = 60000;
+    public static final int MAX_CONNECTIONS = 10;
 
     public static void main(String[] args) {
         try {
@@ -39,7 +41,7 @@ public class Main {
                 new RemoveAllByStudentsCountCommand(collectionManager),
                 new FilterStartsWithNameCommand(collectionManager),
                 new FilterLessThenExpelledCommand(collectionManager), new SaveCommand(collectionManager)});
-        Server server = new Server(PORT, CONNECTION_TIMEOUT, commandManager);
+        Server server = new Server(PORT, CONNECTION_TIMEOUT, commandManager, MAX_CONNECTIONS);
 
         server.run();
     }

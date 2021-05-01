@@ -38,7 +38,7 @@ public class CommandManager {
      * @param commandMsg Command witch should be executed
      * @param ans What should return
      */
-    public void executeCommand(CommandMsg commandMsg, AnswerMsg ans){
+    public synchronized void executeCommand(CommandMsg commandMsg, AnswerMsg ans){
         Main.logger.info("Выполняется команда " + commandMsg.getCommandName() + " " + commandMsg.getCommandStringArgument());
         if (commandMsg.getCommandName().trim().equals("help")) {
             ans.AddAnswer("help : вывести справку по доступным командам");
