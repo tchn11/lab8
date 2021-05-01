@@ -2,6 +2,7 @@ package client;
 
 import client.console.ConsoleManager;
 import general.data.RowStudyGroup;
+import general.data.User;
 import general.exeptions.ConnectionBrokenException;
 import messages.AnswerMsg;
 import messages.CommandMsg;
@@ -36,6 +37,8 @@ public class Client {
 
     private  ConsoleManager consoleManager;
 
+    private User user;
+
     public Client(String host, int port, int attempts, int timeout, ConsoleManager cons){
         serverHost = host;
         serverPort = port;
@@ -57,12 +60,36 @@ public class Client {
             print("Сервер найден, встаю в очередь");
             serverWriter = new ObjectOutputStream(socket.getOutputStream());
             serverReader = new ObjectInputStream(socket.getInputStream());
+            ConsoleManager.print("Вы уже зарегестрированы?");
+            if(consoleManager.askYesOrNo()){
+                user = consoleManager.askUser();
+                CommandMsg msg = new CommandMsg("login", "", null ,user);
+                writeMessage(msg);
+            }
+            else {
+                user = consoleManager.askUser();
+                CommandMsg msg = new CommandMsg("register", "", null, user);
+                writeMessage(msg);
+            }
+            AnswerMsg answerMsg = (AnswerMsg) serverReader.readObject();
+            if (answerMsg.getStatus().equals(Status.FINE)) {
+                print("Вход в аккаунт произведен");
+                return true;
+            }else {
+                print(answerMsg.getMessage());
+                return false;
+            }
         } catch (UnknownHostException e) {
             printErr("Неизвестный хост: " + serverHost + "\n");
             return false;
         } catch (IOException exception) {
             printErr("Ошибка открытия порта " + serverPort + "\n");
             return false;
+        } catch (ClassNotFoundException e) {
+            print("Ошибка авторизации");
+            return false;
+        } catch (ConnectionBrokenException e) {
+            printErr("Произошел разрыв соединения");
         }
         print("Порт успешно открыт.");
         return true;
@@ -142,7 +169,7 @@ public class Client {
             | consoleManager.getCommand().equals("add_if_max")){
                 studyGroup = consoleManager.askGroup();
             }
-            CommandMsg send = new CommandMsg(consoleManager.getCommand(), consoleManager.getArg(), studyGroup);
+            CommandMsg send = new CommandMsg(consoleManager.getCommand(), consoleManager.getArg(), studyGroup, user);
 
             AnswerMsg answ = null;
             boolean wasSend = false;

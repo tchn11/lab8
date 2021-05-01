@@ -40,6 +40,23 @@ public class ConsoleManager {
         System.out.println("err: " + msg);
     }
 
+    public boolean askYesOrNo(){
+        String ans = "";
+        while (!(ans.equals("yes")||ans.equals("no")))
+            ans = parseString("yes/no");
+        if (ans.equals("yes"))
+            return true;
+        return false;
+    }
+
+    public User askUser(){
+        String Name;
+        Name = parseString("Введите имя пользователя");
+        String pass;
+        pass = parseString("Введите пароль");
+        return new User(Name, pass);
+    }
+
     /**
      * Method that ask group from user
      * @return Group

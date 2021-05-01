@@ -2,6 +2,7 @@ package server;
 
 import server.commands.CommandManager;
 import server.connection.ConnectionHandler;
+import server.connection.DatabaseUserManager;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,12 +21,14 @@ public class Server {
     private CommandManager commandManager;
     private int maxUsers;
     private ExecutorService cachedThreadPool;
+    private DatabaseUserManager databaseUserManager;
 
-    public Server(int in_port, int in_timeout, CommandManager com, int MaxUsers){
+    public Server(int in_port, int in_timeout, CommandManager com, int MaxUsers, DatabaseUserManager db){
         port = in_port;
         timeout = in_timeout;
         commandManager = com;
         maxUsers = MaxUsers;
+        databaseUserManager = db;
 
         cachedThreadPool = Executors.newCachedThreadPool();
     }
@@ -103,7 +106,7 @@ public class Server {
             if (client == null)
                 Main.logger.error("Ошибка");
             else
-                cachedThreadPool.submit(new ConnectionHandler(client, commandManager));
+                cachedThreadPool.submit(new ConnectionHandler(client, commandManager, databaseUserManager));
 
             Main.logger.info("Запущен " + ConnectionHandler.WorksNow + " поток");
             try {

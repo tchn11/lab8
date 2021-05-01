@@ -17,8 +17,8 @@ public class AddIfMaxCommand implements Commandable{
 
     @Override
     public boolean execute(String arg, Object obArg, AnswerMsg ans) {
-        StudyGroup sg = new StudyGroup(collectionManager.generateNextId(), (RowStudyGroup) obArg);
-        collectionManager.AddIfMax(sg);
+        //StudyGroup sg = new StudyGroup(collectionManager.generateNextId(), (RowStudyGroup) obArg);
+        //collectionManager.AddIfMax(sg);
         return true;
     }
 

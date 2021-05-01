@@ -30,32 +30,32 @@ public class UpdateIdCommand implements Commandable{
     @Override
     public boolean execute(String arg, Object obArg, AnswerMsg ans) {
 
-        Integer id;
-        try{
-            if (arg.trim().equals(""))
-                throw new EmptyIOException();
-            id = Integer.parseInt(arg.trim());
-        }
-        catch (NumberFormatException e){
-            ans.AddErrorMsg("ID должен быть числом");
-            Main.logger.error("Ошибка ввода: ID должен быть числом");
-            return false;
-        }
-        catch (EmptyIOException e)
-        {
-            ans.AddErrorMsg("Должен присутствовать аргумент ID");
-            Main.logger.error("Ошибка ввода: Должен присутствовать аргумент ID");
-            return false;
-        }
-        if (!collectionManager.checkID(id)) {
-            ans.AddErrorMsg("Нет такого ID");
-            Main.logger.error("Ошибка ввода: Нет такого ID");
-            return false;
-        }
-        RowStudyGroup sg = (RowStudyGroup) obArg;
-        collectionManager.updateElement(new StudyGroup(id, sg));
-        Main.logger.info("Успешно изменен элемент коллекции");
-        ans.AddAnswer("Успешно изменено");
+//        Integer id;
+//        try{
+//            if (arg.trim().equals(""))
+//                throw new EmptyIOException();
+//            id = Integer.parseInt(arg.trim());
+//        }
+//        catch (NumberFormatException e){
+//            ans.AddErrorMsg("ID должен быть числом");
+//            Main.logger.error("Ошибка ввода: ID должен быть числом");
+//            return false;
+//        }
+//        catch (EmptyIOException e)
+//        {
+//            ans.AddErrorMsg("Должен присутствовать аргумент ID");
+//            Main.logger.error("Ошибка ввода: Должен присутствовать аргумент ID");
+//            return false;
+//        }
+//        if (!collectionManager.checkID(id)) {
+//            ans.AddErrorMsg("Нет такого ID");
+//            Main.logger.error("Ошибка ввода: Нет такого ID");
+//            return false;
+//        }
+//        RowStudyGroup sg = (RowStudyGroup) obArg;
+//        collectionManager.updateElement(new StudyGroup(id, sg));
+//        Main.logger.info("Успешно изменен элемент коллекции");
+//        ans.AddAnswer("Успешно изменено");
         return true;
     }
 }

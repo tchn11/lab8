@@ -12,6 +12,22 @@ public class Person  implements Serializable {
     private Long weight; //Поле не может быть null, Значение поля должно быть больше 0
     private String passportID; //Поле может быть null
 
+    public LocalDateTime getBirthday() {
+        return birthday;
+    }
+
+    public Long getWeight() {
+        return weight;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassportID() {
+        return passportID;
+    }
+
     /**
      * Constructor, just set class
      * @param nm Name

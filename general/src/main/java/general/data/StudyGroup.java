@@ -15,6 +15,7 @@ public class StudyGroup {
     private Long averageMark; //Значение поля должно быть больше 0, Поле может быть null
     private Semester semesterEnum; //Поле не может быть null
     private Person groupAdmin; //Поле не может быть null
+    private User user;
 
     /**
      * Constructor, just set class
@@ -28,7 +29,7 @@ public class StudyGroup {
      * @param semEn Semester
      * @param gradm Group admin
      */
-    public StudyGroup(Integer Id, String nm, Coordinates coord, Date crDt, Integer studCo, Integer expSt, Long avrMa, Semester semEn, Person gradm)
+    public StudyGroup(Integer Id, String nm, Coordinates coord, Date crDt, Integer studCo, Integer expSt, Long avrMa, Semester semEn, Person gradm, User us)
     {
         id = Id;
         name = nm;
@@ -39,9 +40,10 @@ public class StudyGroup {
         averageMark = avrMa;
         semesterEnum = semEn;
         groupAdmin = gradm;
+        user = us;
     }
 
-    public StudyGroup(Integer Id,RowStudyGroup sg){
+    public StudyGroup(Integer Id,RowStudyGroup sg, User us){
         id = Id;
         name = sg.getName();
         coordinates = sg.getCoordinates();
@@ -51,6 +53,7 @@ public class StudyGroup {
         averageMark = sg.getAverageMark();
         semesterEnum = sg.getSemesterEnum();
         groupAdmin = sg.getGroupAdmin();
+        user = us;
     }
 
     public Integer getId() {
@@ -105,6 +108,7 @@ public class StudyGroup {
                 ", Средняя оценка = " + averageMark.toString() +
                 ", Семестр = " + semesterEnum.toString() +
                 ", Админ = " + groupAdmin.toString() +
+                ", Добавил пользователь = " + user.getUsername() +
                 '}';
     }
 }

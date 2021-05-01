@@ -1,5 +1,7 @@
 package messages;
 
+import general.data.User;
+
 import java.io.Serializable;
 
 /**
@@ -9,8 +11,10 @@ public class CommandMsg implements Serializable {
     private String commandName;
     private String commandStringArgument;
     private Serializable commandObjectArgument;
+    private User user;
 
-    public CommandMsg(String commandNm, String commandSA, Serializable commandOA) {
+    public CommandMsg(String commandNm, String commandSA, Serializable commandOA, User usr) {
+        user = usr;
         commandName = commandNm;
         commandStringArgument = commandSA;
         commandObjectArgument = commandOA;
@@ -35,5 +39,9 @@ public class CommandMsg implements Serializable {
      */
     public Object getCommandObjectArgument() {
         return commandObjectArgument;
+    }
+
+    public User getUser(){
+        return user;
     }
 }

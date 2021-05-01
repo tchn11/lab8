@@ -27,4 +27,12 @@ public class Coordinates implements Serializable {
                 ", y=" + Integer.toString(y) +
                 '}';
     }
+
+    public int getY() {
+        return y;
+    }
+
+    public long getX() {
+        return x;
+    }
 }

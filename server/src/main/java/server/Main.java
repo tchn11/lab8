@@ -4,6 +4,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.collection.CollectionManager;
 import server.commands.*;
+import server.connection.DatabaseManager;
+import server.connection.DatabaseUserManager;
 import server.file.FileManager;
 
 import java.io.PrintStream;
@@ -19,6 +21,9 @@ public class Main {
     public static final int PORT = 1821;
     public static final int CONNECTION_TIMEOUT = 60000;
     public static final int MAX_CONNECTIONS = 10;
+    public static final String DATABASE_HOST = "jdbc:postgresql://pg:5432/studs";
+    public static final String DATABASE_USER = "s314929";
+    public static final String DATABASE_PASS = "ooo222";
 
     public static void main(String[] args) {
         try {
@@ -33,6 +38,10 @@ public class Main {
         FileManager fileManager = new FileManager(path);
         CollectionManager collectionManager = new CollectionManager(fileManager);
 
+        DatabaseManager databaseManager = new DatabaseManager(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
+
+        DatabaseUserManager databaseUserManager = new DatabaseUserManager(databaseManager);
+
         CommandManager commandManager = new CommandManager(collectionManager, new Commandable[]{
                 new ClearCommand(collectionManager), new AddCommand(collectionManager),
                 new ShowCommand(collectionManager), new InfoCommand(collectionManager),
@@ -41,7 +50,7 @@ public class Main {
                 new RemoveAllByStudentsCountCommand(collectionManager),
                 new FilterStartsWithNameCommand(collectionManager),
                 new FilterLessThenExpelledCommand(collectionManager), new SaveCommand(collectionManager)});
-        Server server = new Server(PORT, CONNECTION_TIMEOUT, commandManager, MAX_CONNECTIONS);
+        Server server = new Server(PORT, CONNECTION_TIMEOUT, commandManager, MAX_CONNECTIONS, databaseUserManager);
 
         server.run();
     }
