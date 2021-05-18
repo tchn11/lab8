@@ -128,7 +128,8 @@ public class ConnectionHandler extends Thread{
                 return;
             }
             CommandMsg commandMsg = (CommandMsg) obj;
-            if (!databaseUserManager.checkUserByUsernameAndPassword(hs2.hashUser(commandMsg.getUser())))
+            commandMsg.setUser(hs2.hashUser(commandMsg.getUser()));
+            if (!databaseUserManager.checkUserByUsernameAndPassword(commandMsg.getUser()))
             {
                 Main.logger.error("Ошибка авторизации по ходу работы");
                 closeChannel();

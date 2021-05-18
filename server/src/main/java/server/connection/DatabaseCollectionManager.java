@@ -27,7 +27,7 @@ public class DatabaseCollectionManager {
             DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN + ", " +
             DatabaseManager.STUDY_GROUP_TABLE_GROUP_ADMIN_ID_COLUMN + ", " +
             DatabaseManager.STUDY_GROUP_TABLE_USER_ID_COLUMN + ") VALUES (?, ?, ?, ?, ?, " +
-            "?, ?::semester, ?, ?)";
+            "?, ?, ?, ?)";
     private final String DELETE_STUDY_GROUP_BY_ID = "DELETE FROM " + DatabaseManager.STUDY_GROUP_TABLE +
             " WHERE " + DatabaseManager.STUDY_GROUP_TABLE_ID_COLUMN + " = ?";
     private final String UPDATE_STUDY_GROUP_NAME_BY_ID = "UPDATE " + DatabaseManager.STUDY_GROUP_TABLE + " SET " +
@@ -43,7 +43,7 @@ public class DatabaseCollectionManager {
             DatabaseManager.STUDY_GROUP_TABLE_AVERAGE_MARK_COLUMN + " = ?" + " WHERE " +
             DatabaseManager.STUDY_GROUP_TABLE_ID_COLUMN + " = ?";
     private final String UPDATE_STUDY_GROUP_SEMESTER_BY_ID = "UPDATE " + DatabaseManager.STUDY_GROUP_TABLE + " SET " +
-            DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN + " = ?::semester" + " WHERE " +
+            DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN + " = ?" + " WHERE " +
             DatabaseManager.STUDY_GROUP_TABLE_ID_COLUMN + " = ?";
    // COORDINATES_TABLE
     private final String SELECT_ALL_COORDINATES = "SELECT * FROM " + DatabaseManager.COORDINATES_TABLE;
@@ -57,7 +57,7 @@ public class DatabaseCollectionManager {
             DatabaseManager.COORDINATES_TABLE_X_COLUMN + " = ?, " +
             DatabaseManager.COORDINATES_TABLE_Y_COLUMN + " = ?" + " WHERE " +
             DatabaseManager.COORDINATES_TABLE_ID_COLUMN + " = ?";
-    private final String DELETE_COOEDINATES_BY_ID = "DELETE FROM " + DatabaseManager.COORDINATES_TABLE +
+    private final String DELETE_COORDINATES_BY_ID = "DELETE FROM " + DatabaseManager.COORDINATES_TABLE +
             " WHERE " + DatabaseManager.COORDINATES_TABLE_ID_COLUMN + " = ?";
     // PERSON_TABLE
     private final String SELECT_ALL_PERSON = "SELECT * FROM " + DatabaseManager.PERSON_TABLE;
@@ -71,8 +71,8 @@ public class DatabaseCollectionManager {
             DatabaseManager.PERSON_TABLE_PASSPORT_ID_COLUMN + ") VALUES (?, ?, ?, ?)";
     private final String UPDATE_PERSON_BY_ID = "UPDATE " + DatabaseManager.PERSON_TABLE + " SET " +
             DatabaseManager.PERSON_TABLE_NAME_COLUMN + " = ?, " +
-            DatabaseManager.PERSON_TABLE_BIRTHDAY_COLUMN + " = ?" +
-            DatabaseManager.PERSON_TABLE_WEIGHT_COLUMN + " = ?" +
+            DatabaseManager.PERSON_TABLE_BIRTHDAY_COLUMN + " = ?, " +
+            DatabaseManager.PERSON_TABLE_WEIGHT_COLUMN + " = ?, " +
             DatabaseManager.PERSON_TABLE_PASSPORT_ID_COLUMN + " = ?" +" WHERE " +
             DatabaseManager.PERSON_TABLE_ID_COLUMN + " = ?";
     private final String DELETE_PERSON_BY_ID = "DELETE FROM " + DatabaseManager.PERSON_TABLE +
@@ -105,8 +105,10 @@ public class DatabaseCollectionManager {
                     Timestamp.valueOf(grouRaw.getGroupAdmin().getBirthday()));
             preparedInsertPersonStatement.setLong(3, grouRaw.getGroupAdmin().getWeight());
             preparedInsertPersonStatement.setString(4, grouRaw.getGroupAdmin().getPassportID());
+
             if (preparedInsertPersonStatement.executeUpdate() == 0)
                 throw new SQLException();
+
             ResultSet generatedPersonKeys = preparedInsertPersonStatement.getGeneratedKeys();
             long userId;
             if (generatedPersonKeys.next()) {
@@ -118,26 +120,29 @@ public class DatabaseCollectionManager {
             preparedInsertCoordinatesStatement.setDouble(1, grouRaw.getCoordinates().getX());
             preparedInsertCoordinatesStatement.setFloat(2, grouRaw.getCoordinates().getY());
 
-            ResultSet generatedCoordinatesKeys = preparedInsertCoordinatesStatement.getGeneratedKeys();
-            int coordinatesId = 0;
-            if (generatedCoordinatesKeys.next()){
-                coordinatesId = generatedCoordinatesKeys.getInt(1);
-            }
             if (preparedInsertCoordinatesStatement.executeUpdate() == 0)
                 throw new SQLException();
+
+            ResultSet generatedCoordinatesKeys = preparedInsertCoordinatesStatement.getGeneratedKeys();
+            long coordinatesId = 0;
+            if (generatedCoordinatesKeys.next()){
+                coordinatesId = generatedCoordinatesKeys.getLong(1);
+                //Main.logger.info("Get coordinates key: " + coordinatesId);
+            }
             Main.logger.info("Выполнен запрос INSERT_COORDINATES.");
 
 
             preparedInsertStudyGroupStatement.setString(1, grouRaw.getName());
-            preparedInsertStudyGroupStatement.setTimestamp(2, Timestamp.valueOf(creationTime));
-            preparedInsertStudyGroupStatement.setInt(3, coordinatesId);
+            preparedInsertStudyGroupStatement.setLong(2, coordinatesId);
+            preparedInsertStudyGroupStatement.setTimestamp(3, Timestamp.valueOf(creationTime));
             preparedInsertStudyGroupStatement.setInt(4, grouRaw.getStudentsCount());
             preparedInsertStudyGroupStatement.setInt(5, grouRaw.getExpelledStudents());
             preparedInsertStudyGroupStatement.setLong(6, grouRaw.getAverageMark());
             preparedInsertStudyGroupStatement.setString(7, grouRaw.getSemesterEnum().toString());
             preparedInsertStudyGroupStatement.setLong(8, userId);
             preparedInsertStudyGroupStatement.setLong(9, databaseUserManager.getUserIdByUsername(user));
-            if (preparedInsertStudyGroupStatement.executeUpdate() == 0) throw new SQLException();
+            if (preparedInsertStudyGroupStatement.executeUpdate() == 0)
+                throw new SQLException();
             ResultSet generatedSGKeys = preparedInsertStudyGroupStatement.getGeneratedKeys();
             int studyGroupId;
             if (generatedSGKeys.next()) {
@@ -264,6 +269,7 @@ public class DatabaseCollectionManager {
             if (resultSet.next()) {
                 CoordinatesId = resultSet.getLong(DatabaseManager.STUDY_GROUP_TABLE_COORDINATES_ID);
             } else throw new SQLException();
+            //Main.logger.info("Get ID " + CoordinatesId);
         } catch (SQLException exception) {
             Main.logger.error("Произошла ошибка при выполнении запроса!");
         } finally {
@@ -297,23 +303,23 @@ public class DatabaseCollectionManager {
         PreparedStatement preparedDeletePersonById = null;
         PreparedStatement preparedDeleteCoordinatesById = null;
         try {
-            preparedDeleteSGByIdStatement = databaseManager.getPreparedStatement(DELETE_STUDY_GROUP_BY_ID, false);
-            preparedDeleteSGByIdStatement.setLong(1, sgId);
-            if (preparedDeleteSGByIdStatement.executeUpdate() == 0)
-                throw new SQLException();
-            Main.logger.info("Выполнен запрос DELETE_STUDY_GROUP_BY_ID.");
-
             preparedDeletePersonById = databaseManager.getPreparedStatement(DELETE_PERSON_BY_ID, false);
             preparedDeletePersonById.setLong(1, getAdminIdByStudyGroupId(sgId));
             if (preparedDeletePersonById.executeUpdate() == 0)
                 throw new SQLException();
             Main.logger.info("Выполнен запрос DELETE_PERSON_BY_ID.");
 
-            preparedDeleteCoordinatesById = databaseManager.getPreparedStatement(DELETE_COOEDINATES_BY_ID, false);
+            preparedDeleteCoordinatesById = databaseManager.getPreparedStatement(DELETE_COORDINATES_BY_ID, false);
             preparedDeleteCoordinatesById.setLong(1, getCoordinatesIdByStudyGroupId(sgId));
             if (preparedDeleteCoordinatesById.executeUpdate() == 0)
                 throw new SQLException();
             Main.logger.info("Выполнен запрос DELETE_COORDINATES_BY_ID.");
+
+            preparedDeleteSGByIdStatement = databaseManager.getPreparedStatement(DELETE_STUDY_GROUP_BY_ID, false);
+            preparedDeleteSGByIdStatement.setLong(1, sgId);
+            if (preparedDeleteSGByIdStatement.executeUpdate() == 0)
+                throw new SQLException();
+            Main.logger.info("Выполнен запрос DELETE_STUDY_GROUP_BY_ID.");
 
         } catch (SQLException exception) {
             Main.logger.error("Произошла ошибка при выполнении запросов!");
@@ -347,16 +353,17 @@ public class DatabaseCollectionManager {
             int StudentsCount = resultSet.getInt(DatabaseManager.STUDY_GROUP_TABLE_STUDENTS_COUNT_COLUMN);
             int ExpeldStudents = resultSet.getInt(DatabaseManager.STUDY_GROUP_TABLE_EXPELLED_STUDENTS_COLUMN);
             long avMark = resultSet.getLong(DatabaseManager.STUDY_GROUP_TABLE_AVERAGE_MARK_COLUMN);
-            Semester sem = Semester.valueOf(resultSet.getString(DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN));
+            Main.logger.info("Ищу элемент по имени " + resultSet.getString(DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN));
+            Semester sem = Semester.valueOf(resultSet.getString(DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN).trim());
             Coordinates cor = getCoordinatesById(getCoordinatesIdByStudyGroupId(id));
             Person per = getPersonById(getAdminIdByStudyGroupId(id));
             User us = databaseUserManager.getUserById(resultSet.getLong(DatabaseManager.STUDY_GROUP_TABLE_USER_ID_COLUMN));
-            return new StudyGroup((int)id, name,
+            return new StudyGroup((int)id, name.trim(),
                     cor, creationDate, StudentsCount,
                     ExpeldStudents, avMark, sem,
                     per, us);
         } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            Main.logger.error("Ошибка парсинга таблицы");
         }
         return null;
     }
@@ -396,10 +403,10 @@ public class DatabaseCollectionManager {
             Main.logger.info("Выполнен запрос SELECT_PERSON_BY_ID.");
             if (resultSet.next()) {
                 person = new Person(
-                        resultSet.getString(DatabaseManager.PERSON_TABLE_NAME_COLUMN),
+                        resultSet.getString(DatabaseManager.PERSON_TABLE_NAME_COLUMN).trim(),
                         resultSet.getTimestamp(DatabaseManager.PERSON_TABLE_BIRTHDAY_COLUMN).toLocalDateTime(),
                         resultSet.getLong(DatabaseManager.PERSON_TABLE_WEIGHT_COLUMN),
-                        resultSet.getString(DatabaseManager.PERSON_TABLE_PASSPORT_ID_COLUMN));
+                        resultSet.getString(DatabaseManager.PERSON_TABLE_PASSPORT_ID_COLUMN).trim());
             } else throw new SQLException();
         } catch (SQLException exception) {
             Main.logger.error("Произошла ошибка при выполнении запроса SELECT_COORDINATES_BY_ID!");
@@ -407,5 +414,12 @@ public class DatabaseCollectionManager {
             databaseManager.closePreparedStatement(preparedSelectPersonByIdStatement);
         }
         return person;
+    }
+
+    public void clearCollection() {
+        Stack<StudyGroup> list = getCollection();
+        for (StudyGroup sg : list) {
+            deleteStudyGroupById(sg.getId());
+        }
     }
 }

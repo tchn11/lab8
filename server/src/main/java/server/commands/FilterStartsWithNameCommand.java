@@ -4,6 +4,7 @@ import general.exeptions.EmptyIOException;
 import messages.AnswerMsg;
 import server.Main;
 import server.collection.CollectionManager;
+import general.data.User;
 
 public class FilterStartsWithNameCommand implements Commandable{
     CollectionManager collectionManager;
@@ -18,7 +19,7 @@ public class FilterStartsWithNameCommand implements Commandable{
     }
 
     @Override
-    public boolean execute(String arg, Object obArg, AnswerMsg ans) {
+    public boolean execute(String arg, Object obArg, AnswerMsg ans, User user) {
         try{
             if (arg.trim().equals(""))
                 throw new EmptyIOException();

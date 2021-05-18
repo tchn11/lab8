@@ -92,6 +92,10 @@ public class StudyGroup {
         return groupAdmin;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public long getNum(){
         return (id + studentsCount + expelledStudents + averageMark);
     }

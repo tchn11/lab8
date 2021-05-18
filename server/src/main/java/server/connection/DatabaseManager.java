@@ -11,6 +11,20 @@ public class DatabaseManager {
     public static final String COORDINATES_TABLE = "coordinates";
     public static final String PERSON_TABLE = "person";
     // STUDY_GROUP column names
+     /*
+    CREATE TABLE study_groups(
+            id SERIAL PRIMARY KEY,
+            name           CHAR(50)    NOT NULL,
+            coordinates_id INT,
+            creation_date        TIME,
+            students_count      INT,
+            expelled_students      INT,
+            average_mark        INT,
+            semester            CHAR(50),
+            group_admin_id        INT,
+            user_id             INT
+    );
+      */
     public static final String STUDY_GROUP_TABLE_ID_COLUMN = "id";
     public static final String STUDY_GROUP_TABLE_NAME_COLUMN = "name";
     public static final String STUDY_GROUP_TABLE_COORDINATES_ID = "coordinates_id";
@@ -35,6 +49,28 @@ public class DatabaseManager {
     public static final String PERSON_TABLE_BIRTHDAY_COLUMN = "birthday";
     public static final String PERSON_TABLE_WEIGHT_COLUMN = "weight";
     public static final String PERSON_TABLE_PASSPORT_ID_COLUMN = "passport_id";
+    /*
+    CREATE TABLE person(
+            id SERIAL PRIMARY KEY,
+            name           CHAR(50)    NOT NULL,
+            birthday            TIME     NOT NULL,
+            weight        INT,
+            passport_id         CHAR(50)
+    );
+
+    CREATE TABLE coordinates(
+            id SERIAL PRIMARY KEY,
+            x INT,
+            y INT
+    );
+
+    CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR ( 50 ) UNIQUE NOT NULL,
+        password VARCHAR ( 50 ) NOT NULL
+       );
+
+     */
 
     private final String JDBC_DRIVER = "org.postgresql.Driver";
 

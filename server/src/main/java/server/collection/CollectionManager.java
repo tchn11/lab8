@@ -2,8 +2,10 @@ package server.collection;
 
 import general.data.StudyGroup;
 import server.Main;
+import server.connection.DatabaseCollectionManager;
 import server.file.FileManager;
 
+import javax.xml.crypto.Data;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,17 +19,24 @@ public class CollectionManager {
     private FileManager fileManager;
     private java.time.LocalDateTime initDate;
 
+    DatabaseCollectionManager databaseCollectionManager;
+
     /**
      * Constructor, set start values
      * @param fl File manager
      */
-    public CollectionManager(FileManager fl)
+    public CollectionManager(FileManager fl, DatabaseCollectionManager db)
     {
         initDate = java.time.LocalDateTime.now();
         fileManager = fl;
-        myCollection = fileManager.readFile();
+        myCollection = db.getCollection();
+        databaseCollectionManager = db;
     }
 
+
+    public void update(){
+        myCollection = databaseCollectionManager.getCollection();
+    }
     /**
      * Save collection to file
      */
@@ -173,6 +182,20 @@ public class CollectionManager {
      * @param num StudentsCount that should be deleted
      */
     public void DeleteByStudentsCount(int num){
+        for (StudyGroup sg : myCollection){
+            if (sg.getStudentsCount() == num){
+                databaseCollectionManager.deleteStudyGroupById(sg.getId());
+            }
+        }
         myCollection.removeIf(studyGroup -> studyGroup.getStudentsCount() == num);
+    }
+
+    public StudyGroup getById(int Id){
+        for (StudyGroup sg : myCollection){
+            if (sg.getId() == Id){
+                return sg;
+            }
+        }
+        return null;
     }
 }

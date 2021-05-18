@@ -1,5 +1,6 @@
 package server.commands;
 
+import general.data.User;
 import general.exeptions.EmptyIOException;
 import messages.AnswerMsg;
 import server.Main;
@@ -17,7 +18,7 @@ public class FilterLessThenExpelledCommand implements Commandable{
     }
 
     @Override
-    public boolean execute(String arg, Object obArg, AnswerMsg ans) {
+    public boolean execute(String arg, Object obArg, AnswerMsg ans, User user) {
         int max;
         try{
             if (arg.trim().equals(""))

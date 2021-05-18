@@ -33,6 +33,11 @@ public class User implements Serializable {
         return username + ":" + password;
     }
 
+    public void update(User usr){
+        username = usr.getUsername();
+        password = usr.getPassword();
+    }
+
     @Override
     public int hashCode() {
         return username.hashCode() + password.hashCode();

@@ -1,17 +1,21 @@
 package server.commands;
 
+import general.data.User;
 import messages.AnswerMsg;
 import server.Main;
 import server.collection.CollectionManager;
+import server.connection.DatabaseCollectionManager;
 
 public class ClearCommand implements Commandable{
     CollectionManager collectionManager;
+    DatabaseCollectionManager databaseCollectionManager;
     /**
      * Constructor, just set variables for work
      * @param coll Collection Manager
      */
-    public ClearCommand(CollectionManager coll){
+    public ClearCommand(CollectionManager coll, DatabaseCollectionManager db){
         collectionManager = coll;
+        databaseCollectionManager = db;
     }
 
     @Override
@@ -25,8 +29,9 @@ public class ClearCommand implements Commandable{
     }
 
     @Override
-    public boolean execute(String arg, Object obArg, AnswerMsg ans) {
-        collectionManager.getMyCollection().clear();
+    public boolean execute(String arg, Object obArg, AnswerMsg ans, User user) {
+        databaseCollectionManager.clearCollection();
+        collectionManager.update();
         ans.AddAnswer("Успешно очищено");
         Main.logger.info("Коллекция успешно очищена");
         return true;

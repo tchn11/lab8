@@ -7,6 +7,7 @@ import messages.Status;
 import server.Main;
 import server.collection.CollectionManager;
 import server.file.ScriptManager;
+import general.data.User;
 
 import java.util.Stack;
 
@@ -64,7 +65,7 @@ public class CommandManager {
         }
         else if(commandMsg.getCommandName().trim().equals("execute_script")){
             if (!commandMsg.getCommandStringArgument().trim().equals("")) {
-                ScriptMode(commandMsg.getCommandStringArgument().trim(), ans);
+                ScriptMode(commandMsg.getCommandStringArgument().trim(), ans, commandMsg.getUser());
                 openedScripts.clear();
                 ans.AddStatus(Status.FINE);
             }
@@ -77,8 +78,9 @@ public class CommandManager {
             boolean isFindCommand = false;
             for (Commandable comman : commands) {
                 if (commandMsg.getCommandName().trim().equals(comman.getName())) {
+                    collectionManager.update();
                     boolean stat =  comman.execute(commandMsg.getCommandStringArgument(), commandMsg.getCommandObjectArgument(),
-                            ans);
+                            ans, commandMsg.getUser());
                     if (stat){
                         ans.AddStatus(Status.FINE);
                     }else{
@@ -109,7 +111,7 @@ public class CommandManager {
      * @param file Script file
      * @param ans Witch should return to user
      */
-    private void ScriptMode(String file, AnswerMsg ans) {
+    private void ScriptMode(String file, AnswerMsg ans, User user) {
         ScriptManager scriptManager = new ScriptManager(file.trim());
         openedScripts.add(file.trim());
         boolean isRuning = true;
@@ -143,7 +145,7 @@ public class CommandManager {
                         ans.AddErrorMsg("Попытка рекурсивно вызвать скрипт");
                     }
                     else {
-                        ScriptMode(cmd[1].trim(), ans);
+                        ScriptMode(cmd[1].trim(), ans, user);
                     }
                 }
                 else{
@@ -164,7 +166,8 @@ public class CommandManager {
                                 break;
                             }
                         }
-                        comman.execute(cmd[1], rowStudyGroup, ans);
+                        collectionManager.update();
+                        comman.execute(cmd[1], rowStudyGroup, ans, user);
                         isFindCommand = true;
                     }
                 }

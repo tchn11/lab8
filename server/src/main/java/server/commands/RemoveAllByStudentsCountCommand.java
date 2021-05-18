@@ -4,6 +4,7 @@ import general.exeptions.EmptyIOException;
 import messages.AnswerMsg;
 import server.Main;
 import server.collection.CollectionManager;
+import general.data.User;
 
 public class RemoveAllByStudentsCountCommand implements Commandable{
     CollectionManager collectionManager;
@@ -16,7 +17,7 @@ public class RemoveAllByStudentsCountCommand implements Commandable{
     }
 
     @Override
-    public boolean execute(String arg, Object obArg, AnswerMsg ans) {
+    public boolean execute(String arg, Object obArg, AnswerMsg ans, User user) {
         int num;
         try{
             if (arg.trim().equals(""))
@@ -35,6 +36,7 @@ public class RemoveAllByStudentsCountCommand implements Commandable{
             return true;
         }
         collectionManager.DeleteByStudentsCount(num);
+        collectionManager.update();
         ans.AddAnswer("Элементы успешно удалены");
         Main.logger.info("Элементы успешно добавлены");
         return true;

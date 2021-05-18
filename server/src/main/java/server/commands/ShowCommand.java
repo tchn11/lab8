@@ -3,6 +3,7 @@ package server.commands;
 import messages.AnswerMsg;
 import server.Main;
 import server.collection.CollectionManager;
+import general.data.User;
 
 public class ShowCommand implements Commandable{
     CollectionManager collectionManager;
@@ -25,7 +26,7 @@ public class ShowCommand implements Commandable{
     }
 
     @Override
-    public boolean execute(String arg, Object obArg, AnswerMsg ans) {
+    public boolean execute(String arg, Object obArg, AnswerMsg ans, User user) {
         ans.AddAnswer("Коллекция:\n");
         ans.AddAnswer(collectionManager.getList());
         Main.logger.info("Пользователь запросил коллекцию");

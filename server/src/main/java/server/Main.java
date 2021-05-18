@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import server.collection.CollectionManager;
 import server.commands.*;
+import server.connection.DatabaseCollectionManager;
 import server.connection.DatabaseManager;
 import server.connection.DatabaseUserManager;
 import server.file.FileManager;
@@ -36,20 +37,23 @@ public class Main {
             logger.error("Нет переменной с загрузочным файлом");
         }
         FileManager fileManager = new FileManager(path);
-        CollectionManager collectionManager = new CollectionManager(fileManager);
 
         DatabaseManager databaseManager = new DatabaseManager(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
 
         DatabaseUserManager databaseUserManager = new DatabaseUserManager(databaseManager);
 
+        DatabaseCollectionManager databaseCollectionManager = new DatabaseCollectionManager(databaseManager, databaseUserManager);
+
+        CollectionManager collectionManager = new CollectionManager(fileManager, databaseCollectionManager);
+
         CommandManager commandManager = new CommandManager(collectionManager, new Commandable[]{
-                new ClearCommand(collectionManager), new AddCommand(collectionManager),
+                new ClearCommand(collectionManager, databaseCollectionManager), new AddCommand(collectionManager, databaseCollectionManager),
                 new ShowCommand(collectionManager), new InfoCommand(collectionManager),
-                new UpdateIdCommand(collectionManager), new RemoveByIdCommand(collectionManager),
-                new RemoveByIndexCommand(collectionManager), new AddIfMaxCommand(collectionManager),
+                new UpdateIdCommand(collectionManager, databaseCollectionManager), new RemoveByIdCommand(collectionManager, databaseCollectionManager),
+                new RemoveByIndexCommand(collectionManager, databaseCollectionManager), new AddIfMaxCommand(collectionManager, databaseCollectionManager),
                 new RemoveAllByStudentsCountCommand(collectionManager),
                 new FilterStartsWithNameCommand(collectionManager),
-                new FilterLessThenExpelledCommand(collectionManager), new SaveCommand(collectionManager)});
+                new FilterLessThenExpelledCommand(collectionManager)});
         Server server = new Server(PORT, CONNECTION_TIMEOUT, commandManager, MAX_CONNECTIONS, databaseUserManager);
 
         server.run();
