@@ -57,6 +57,11 @@ public class UpdateIdCommand implements Commandable{
             return false;
         }
         RowStudyGroup sg = (RowStudyGroup) obArg;
+        if (!user.getUsername().equals(collectionManager.getById(id).getUser().getUsername())){
+            ans.AddErrorMsg("Нет разрешения на редактирование, так как владелец: " + collectionManager.getById(id).getUser().getUsername());
+            Main.logger.error("У пользоваеля " + user.getUsername() + " нет прав редактировать этот элемент.");
+            return false;
+        }
         databaseCollectionManager.updateStudyGroupById(id, sg);
         collectionManager.update();
         Main.logger.info("Успешно изменен элемент коллекции " + sg.toString());

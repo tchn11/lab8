@@ -11,7 +11,6 @@ import server.file.FileManager;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
-import java.net.PortUnreachableException;
 
 /**
  * Main class for server
@@ -21,10 +20,10 @@ public class Main {
     public static Logger logger = LogManager.getLogger("ServerLogger");
     public static final int PORT = 1821;
     public static final int CONNECTION_TIMEOUT = 60000;
-    public static final int MAX_CONNECTIONS = 10;
+    public static final int MAX_CONNECTIONS = 3;
     public static final String DATABASE_HOST = "jdbc:postgresql://pg:5432/studs";
     public static final String DATABASE_USER = "s314929";
-    public static final String DATABASE_PASS = "ooo222";
+    public static final String DATABASE_PASS = "3o32";
 
     public static void main(String[] args) {
         try {
@@ -32,11 +31,6 @@ public class Main {
         } catch (UnsupportedEncodingException e) {
             System.out.println("Code error");
         }
-        String path = System.getenv().get("WAY_OF_THE_NINJA");
-        if (path == null) {
-            logger.error("Нет переменной с загрузочным файлом");
-        }
-        FileManager fileManager = new FileManager(path);
 
         DatabaseManager databaseManager = new DatabaseManager(DATABASE_HOST, DATABASE_USER, DATABASE_PASS);
 
@@ -44,7 +38,7 @@ public class Main {
 
         DatabaseCollectionManager databaseCollectionManager = new DatabaseCollectionManager(databaseManager, databaseUserManager);
 
-        CollectionManager collectionManager = new CollectionManager(fileManager, databaseCollectionManager);
+        CollectionManager collectionManager = new CollectionManager(databaseCollectionManager);
 
         CommandManager commandManager = new CommandManager(collectionManager, new Commandable[]{
                 new ClearCommand(collectionManager, databaseCollectionManager), new AddCommand(collectionManager, databaseCollectionManager),

@@ -78,7 +78,6 @@ public class CommandManager {
             boolean isFindCommand = false;
             for (Commandable comman : commands) {
                 if (commandMsg.getCommandName().trim().equals(comman.getName())) {
-                    collectionManager.update();
                     boolean stat =  comman.execute(commandMsg.getCommandStringArgument(), commandMsg.getCommandObjectArgument(),
                             ans, commandMsg.getUser());
                     if (stat){
@@ -166,7 +165,6 @@ public class CommandManager {
                                 break;
                             }
                         }
-                        collectionManager.update();
                         comman.execute(cmd[1], rowStudyGroup, ans, user);
                         isFindCommand = true;
                     }

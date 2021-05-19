@@ -16,7 +16,7 @@ public class DatabaseManager {
             id SERIAL PRIMARY KEY,
             name           CHAR(50)    NOT NULL,
             coordinates_id INT,
-            creation_date        TIME,
+            creation_date        TIMESTAMP,
             students_count      INT,
             expelled_students      INT,
             average_mark        INT,
@@ -53,7 +53,7 @@ public class DatabaseManager {
     CREATE TABLE person(
             id SERIAL PRIMARY KEY,
             name           CHAR(50)    NOT NULL,
-            birthday            TIME     NOT NULL,
+            birthday            TIMESTAMP     NOT NULL,
             weight        INT,
             passport_id         CHAR(50)
     );
@@ -99,7 +99,7 @@ public class DatabaseManager {
         }
     }
 
-    public PreparedStatement getPreparedStatement(String sqlStatement, boolean generateKeys) throws SQLException {
+    public PreparedStatement getPreparedStatement(String sqlStatement, boolean generateKeys) {
         PreparedStatement preparedStatement;
         try {
             if (base == null) throw new SQLException();
@@ -109,8 +109,8 @@ public class DatabaseManager {
             return preparedStatement;
         } catch (SQLException exception) {
             if (base == null) Main.logger.error("Соединение с базой данных не установлено!");
-            throw new SQLException(exception);
         }
+        return null;
     }
 
 

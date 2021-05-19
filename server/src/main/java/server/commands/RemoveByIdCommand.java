@@ -53,6 +53,11 @@ public class RemoveByIdCommand implements Commandable{
             Main.logger.info("Нет такого ID");
             return true;
         }
+        if (!user.getUsername().equals(collectionManager.getById(id).getUser().getUsername())){
+            ans.AddErrorMsg("Нет разрешения на удаление, так как владелец: " + collectionManager.getById(id).getUser().getUsername());
+            Main.logger.error("У пользоваеля " + user.getUsername() + " нет прав редактировать этот элемент.");
+            return false;
+        }
         databaseCollectionManager.deleteStudyGroupById(id);
         collectionManager.update();
         Main.logger.info("Успешно удален элемент с ID: " + Integer.toString(id));

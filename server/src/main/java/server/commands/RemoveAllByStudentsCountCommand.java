@@ -35,7 +35,7 @@ public class RemoveAllByStudentsCountCommand implements Commandable{
             Main.logger.error("Должен присутствовать аргумент studentsCount");
             return true;
         }
-        collectionManager.DeleteByStudentsCount(num);
+        collectionManager.DeleteByStudentsCount(num, user, ans);
         collectionManager.update();
         ans.AddAnswer("Элементы успешно удалены");
         Main.logger.info("Элементы успешно добавлены");

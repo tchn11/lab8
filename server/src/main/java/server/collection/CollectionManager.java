@@ -1,11 +1,11 @@
 package server.collection;
 
 import general.data.StudyGroup;
+import general.data.User;
+import messages.AnswerMsg;
 import server.Main;
 import server.connection.DatabaseCollectionManager;
-import server.file.FileManager;
 
-import javax.xml.crypto.Data;
 import java.util.Stack;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,19 +16,16 @@ import java.util.stream.Stream;
  */
 public class CollectionManager {
     private Stack<StudyGroup> myCollection;
-    private FileManager fileManager;
     private java.time.LocalDateTime initDate;
 
     DatabaseCollectionManager databaseCollectionManager;
 
     /**
      * Constructor, set start values
-     * @param fl File manager
      */
-    public CollectionManager(FileManager fl, DatabaseCollectionManager db)
+    public CollectionManager(DatabaseCollectionManager db)
     {
         initDate = java.time.LocalDateTime.now();
-        fileManager = fl;
         myCollection = db.getCollection();
         databaseCollectionManager = db;
     }
@@ -36,12 +33,6 @@ public class CollectionManager {
 
     public void update(){
         myCollection = databaseCollectionManager.getCollection();
-    }
-    /**
-     * Save collection to file
-     */
-    public void SaveCollection(){
-        fileManager.saveCollection(myCollection);
     }
 
     /**
@@ -181,13 +172,17 @@ public class CollectionManager {
      * Delete elements StudentsCount is equals argument
      * @param num StudentsCount that should be deleted
      */
-    public void DeleteByStudentsCount(int num){
+    public void DeleteByStudentsCount(int num, User changer, AnswerMsg answerMsg){
         for (StudyGroup sg : myCollection){
             if (sg.getStudentsCount() == num){
-                databaseCollectionManager.deleteStudyGroupById(sg.getId());
+                if (changer.getUsername().equals(sg.getUser().getUsername())) {
+                    databaseCollectionManager.deleteStudyGroupById(sg.getId());
+                    answerMsg.AddAnswer("Удалена группа: " + sg.getName());
+                }else {
+                    answerMsg.AddAnswer("Группой " + sg.getName() + " владеет " + sg.getUser().getUsername() + " поэтому она не была удалена!");
+                }
             }
         }
-        myCollection.removeIf(studyGroup -> studyGroup.getStudentsCount() == num);
     }
 
     public StudyGroup getById(int Id){

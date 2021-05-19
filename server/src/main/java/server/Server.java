@@ -92,9 +92,9 @@ public class Server {
             return;
         boolean working = true;
         while (working) {
-            if (ConnectionHandler.WorksNow >= 10){
+            if (ConnectionHandler.WorksNow >= maxUsers){
                 Main.logger.error("Максимум соединений!!");
-                while(ConnectionHandler.WorksNow >= 10){
+                while(ConnectionHandler.WorksNow >= maxUsers){
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -107,7 +107,6 @@ public class Server {
                 Main.logger.error("Ошибка");
             else
                 cachedThreadPool.submit(new ConnectionHandler(client, commandManager, databaseUserManager));
-
             Main.logger.info("Запущен " + ConnectionHandler.WorksNow + " поток");
             try {
                 Thread.sleep(100);

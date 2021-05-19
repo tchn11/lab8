@@ -63,6 +63,11 @@ public class RemoveByIndexCommand implements Commandable{
             }
             i++;
         }
+        if (!user.getUsername().equals(collectionManager.getById((int) remId).getUser().getUsername())){
+            ans.AddErrorMsg("Нет разрешения на редактирование, так как владелец: " + collectionManager.getById((int) remId).getUser().getUsername());
+            Main.logger.error("У пользоваеля " + user.getUsername() + " нет прав редактировать этот элемент.");
+            return false;
+        }
         databaseCollectionManager.deleteStudyGroupById(remId);
         collectionManager.update();
         Main.logger.info("Успешно удален элемент c индексом " + Integer.toString(index));

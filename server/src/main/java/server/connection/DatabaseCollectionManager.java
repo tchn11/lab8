@@ -85,7 +85,7 @@ public class DatabaseCollectionManager {
         databaseUserManager = userManager;
     }
 
-    public StudyGroup insertStudyGroup(RowStudyGroup grouRaw, User user){
+    public StudyGroup insertStudyGroup(RowStudyGroup groupRaw, User user){
         StudyGroup stGroup;
         PreparedStatement preparedInsertStudyGroupStatement = null;
         PreparedStatement preparedInsertCoordinatesStatement = null;
@@ -100,11 +100,11 @@ public class DatabaseCollectionManager {
             preparedInsertCoordinatesStatement = databaseManager.getPreparedStatement(INSERT_COORDINATES, true);
             preparedInsertPersonStatement = databaseManager.getPreparedStatement(INSERT_PERSON, true);
 
-            preparedInsertPersonStatement.setString(1, grouRaw.getGroupAdmin().getName());
+            preparedInsertPersonStatement.setString(1, groupRaw.getGroupAdmin().getName());
             preparedInsertPersonStatement.setTimestamp(2,
-                    Timestamp.valueOf(grouRaw.getGroupAdmin().getBirthday()));
-            preparedInsertPersonStatement.setLong(3, grouRaw.getGroupAdmin().getWeight());
-            preparedInsertPersonStatement.setString(4, grouRaw.getGroupAdmin().getPassportID());
+                    Timestamp.valueOf(groupRaw.getGroupAdmin().getBirthday()));
+            preparedInsertPersonStatement.setLong(3, groupRaw.getGroupAdmin().getWeight());
+            preparedInsertPersonStatement.setString(4, groupRaw.getGroupAdmin().getPassportID());
 
             if (preparedInsertPersonStatement.executeUpdate() == 0)
                 throw new SQLException();
@@ -117,8 +117,8 @@ public class DatabaseCollectionManager {
             Main.logger.info("Выполнен запрос INSERT_PERSON.");
 
 
-            preparedInsertCoordinatesStatement.setDouble(1, grouRaw.getCoordinates().getX());
-            preparedInsertCoordinatesStatement.setFloat(2, grouRaw.getCoordinates().getY());
+            preparedInsertCoordinatesStatement.setDouble(1, groupRaw.getCoordinates().getX());
+            preparedInsertCoordinatesStatement.setFloat(2, groupRaw.getCoordinates().getY());
 
             if (preparedInsertCoordinatesStatement.executeUpdate() == 0)
                 throw new SQLException();
@@ -132,13 +132,13 @@ public class DatabaseCollectionManager {
             Main.logger.info("Выполнен запрос INSERT_COORDINATES.");
 
 
-            preparedInsertStudyGroupStatement.setString(1, grouRaw.getName());
+            preparedInsertStudyGroupStatement.setString(1, groupRaw.getName());
             preparedInsertStudyGroupStatement.setLong(2, coordinatesId);
             preparedInsertStudyGroupStatement.setTimestamp(3, Timestamp.valueOf(creationTime));
-            preparedInsertStudyGroupStatement.setInt(4, grouRaw.getStudentsCount());
-            preparedInsertStudyGroupStatement.setInt(5, grouRaw.getExpelledStudents());
-            preparedInsertStudyGroupStatement.setLong(6, grouRaw.getAverageMark());
-            preparedInsertStudyGroupStatement.setString(7, grouRaw.getSemesterEnum().toString());
+            preparedInsertStudyGroupStatement.setInt(4, groupRaw.getStudentsCount());
+            preparedInsertStudyGroupStatement.setInt(5, groupRaw.getExpelledStudents());
+            preparedInsertStudyGroupStatement.setLong(6, groupRaw.getAverageMark());
+            preparedInsertStudyGroupStatement.setString(7, groupRaw.getSemesterEnum().toString());
             preparedInsertStudyGroupStatement.setLong(8, userId);
             preparedInsertStudyGroupStatement.setLong(9, databaseUserManager.getUserIdByUsername(user));
             if (preparedInsertStudyGroupStatement.executeUpdate() == 0)
@@ -152,7 +152,7 @@ public class DatabaseCollectionManager {
 
             stGroup = new StudyGroup(
                     studyGroupId,
-                    grouRaw,
+                    groupRaw,
                     user);
 
             databaseManager.commit();
@@ -329,20 +329,20 @@ public class DatabaseCollectionManager {
     }
 
     public Stack<StudyGroup> getCollection(){
-        Stack<StudyGroup> buff = new Stack<StudyGroup>();
+        Stack<StudyGroup> buffCollection = new Stack<StudyGroup>();
         PreparedStatement preparedSelectAllStatement = null;
         try {
             preparedSelectAllStatement = databaseManager.getPreparedStatement(SELECT_ALL_STUDY_GROUPS, false);
             ResultSet resultSet = preparedSelectAllStatement.executeQuery();
             while (resultSet.next()) {
-                buff.add(createStudyGroup(resultSet));
+                buffCollection.add(createStudyGroup(resultSet));
             }
         } catch (SQLException exception) {
             Main.logger.error("Ошибка создания коллекции");
         } finally {
             databaseManager.closePreparedStatement(preparedSelectAllStatement);
         }
-        return buff;
+        return buffCollection;
     }
 
     private StudyGroup createStudyGroup(ResultSet resultSet){
@@ -416,10 +416,11 @@ public class DatabaseCollectionManager {
         return person;
     }
 
-    public void clearCollection() {
+    public void clearCollection(User chager) {
         Stack<StudyGroup> list = getCollection();
         for (StudyGroup sg : list) {
-            deleteStudyGroupById(sg.getId());
+            if (chager.getUsername().equals(sg.getUser().getUsername()))
+                deleteStudyGroupById(sg.getId());
         }
     }
 }

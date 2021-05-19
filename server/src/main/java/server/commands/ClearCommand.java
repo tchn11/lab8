@@ -30,9 +30,9 @@ public class ClearCommand implements Commandable{
 
     @Override
     public boolean execute(String arg, Object obArg, AnswerMsg ans, User user) {
-        databaseCollectionManager.clearCollection();
+        databaseCollectionManager.clearCollection(user);
         collectionManager.update();
-        ans.AddAnswer("Успешно очищено");
+        ans.AddAnswer("Успешно удалены принадлежащие вам элементы");
         Main.logger.info("Коллекция успешно очищена");
         return true;
     }
