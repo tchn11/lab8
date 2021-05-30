@@ -60,6 +60,10 @@ public class ConnectionHandler extends Thread{
         Main.logger.info("Получаю логин и пароль");
         CommandMsg login = (CommandMsg) readObj();
         Hasher hs2 = new Hasher();
+        if (login == null){
+            closeChannel();
+            return;
+        }
         if (login.getCommandName().equals("login")){
             if (databaseUserManager.checkUserByUsernameAndPassword(hs2.hashUser(login.getUser())))
             {

@@ -18,12 +18,12 @@ import java.io.UnsupportedEncodingException;
  */
 public class Main {
     public static Logger logger = LogManager.getLogger("ServerLogger");
-    public static final int PORT = 1821;
+    public static final int PORT = 1820;
     public static final int CONNECTION_TIMEOUT = 60000;
     public static final int MAX_CONNECTIONS = 3;
     public static final String DATABASE_HOST = "jdbc:postgresql://pg:5432/studs";
     public static final String DATABASE_USER = "s314929";
-    public static final String DATABASE_PASS = "3o32";
+    public static final String DATABASE_PASS = "ooo222";
 
     public static void main(String[] args) {
         try {

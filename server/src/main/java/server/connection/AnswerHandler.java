@@ -22,7 +22,7 @@ public class AnswerHandler extends Thread{
      * @param answerMsg Message
      * @return All right or not
      */
-    private boolean sendAnswer(AnswerMsg answerMsg){
+    private synchronized boolean sendAnswer(AnswerMsg answerMsg){
         try{
             Main.logger.info("Отправляю ответ: " + answerMsg.getMessage());
             objectOutputStream.writeObject(answerMsg);
