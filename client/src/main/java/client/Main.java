@@ -1,7 +1,7 @@
 package client;
 
 import client.console.ConsoleManager;
-import client.grafic.Interface;
+import client.grafic.LoginWindow;
 import client.grafic.locals.English;
 
 import java.io.PrintStream;
@@ -40,7 +40,7 @@ public class Main {
         ConsoleManager consoleManager = new ConsoleManager(scanner);
         Client client = new Client(host, port, recconectAtmpts, timeout, consoleManager);
         new English();
-        Interface inter = new Interface(client);
+        LoginWindow inter = new LoginWindow(client);
         inter.setVisible(true);
         //client.run();
     }

@@ -50,7 +50,7 @@ public class CollectionManager {
      */
     public void add(StudyGroup sg){
         myCollection.add(sg);
-        Main.logger.info("Добавлен элемент:");
+        Main.logger.info("\u0414\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u044D\u043B\u0435\u043C\u0435\u043D\u0442:");
         Main.logger.info(sg.toString());
     }
 
@@ -71,7 +71,7 @@ public class CollectionManager {
      */
     public String getList(){
         if (myCollection.empty())
-            return "Колекция пуста";
+            return "\u041A\u043E\u043B\u0435\u043A\u0446\u0438\u044F \u043F\u0443\u0441\u0442\u0430";
         return myCollection.stream()
                 .reduce("", (sum, m) -> sum += m + "\n\n", (sum1, sum2) -> sum1 + sum2).trim();
     }
@@ -81,7 +81,7 @@ public class CollectionManager {
      * @return Information
      */
     public String getInfo(){
-        return "Stack из элементов StudyGroup, размер: " + Integer.toString(myCollection.size()) + ", дата иницализации: " + initDate.toString();
+        return "Stack \u0438\u0437 \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u043E\u0432 StudyGroup, \u0440\u0430\u0437\u043C\u0435\u0440: " + Integer.toString(myCollection.size()) + ", \u0434\u0430\u0442\u0430 \u0438\u043D\u0438\u0446\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u0438: " + initDate.toString();
     }
 
     /**
@@ -92,7 +92,7 @@ public class CollectionManager {
         Stream str = myCollection.stream()
                 .map(studyGroup -> studyGroup.getId().equals(sg.getId()) ? sg : studyGroup);
 
-                str.collect(Collectors.toCollection(Stack::new));
+        str.collect(Collectors.toCollection(Stack::new));
     }
 
     /**
@@ -177,9 +177,9 @@ public class CollectionManager {
             if (sg.getStudentsCount() == num){
                 if (changer.getUsername().equals(sg.getUser().getUsername())) {
                     databaseCollectionManager.deleteStudyGroupById(sg.getId());
-                    answerMsg.AddAnswer("Удалена группа: " + sg.getName());
+                    answerMsg.AddAnswer("\u0423\u0434\u0430\u043B\u0435\u043D\u0430 \u0433\u0440\u0443\u043F\u043F\u0430: " + sg.getName());
                 }else {
-                    answerMsg.AddAnswer("Группой " + sg.getName() + " владеет " + sg.getUser().getUsername() + " поэтому она не была удалена!");
+                    answerMsg.AddAnswer("\u0413\u0440\u0443\u043F\u043F\u043E\u0439 " + sg.getName() + " \u0432\u043B\u0430\u0434\u0435\u0435\u0442 " + sg.getUser().getUsername() + " \u043F\u043E\u044D\u0442\u043E\u043C\u0443 \u043E\u043D\u0430 \u043D\u0435 \u0431\u044B\u043B\u0430 \u0443\u0434\u0430\u043B\u0435\u043D\u0430!");
                 }
             }
         }

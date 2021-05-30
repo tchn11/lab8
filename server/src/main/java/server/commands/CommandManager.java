@@ -40,12 +40,12 @@ public class CommandManager {
      * @param ans What should return
      */
     public synchronized void executeCommand(CommandMsg commandMsg, AnswerMsg ans){
-        Main.logger.info("Выполняется команда " + commandMsg.getCommandName() + " " + commandMsg.getCommandStringArgument());
+        Main.logger.info("\u0412\u044B\u043F\u043E\u043B\u043D\u044F\u0435\u0442\u0441\u044F \u043A\u043E\u043C\u0430\u043D\u0434\u0430 " + commandMsg.getCommandName() + " " + commandMsg.getCommandStringArgument());
         if (commandMsg.getCommandName().trim().equals("help")) {
-            ans.AddAnswer("help : вывести справку по доступным командам");
-            ans.AddAnswer("execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.");
-            ans.AddAnswer("history : вывести последние 7 команд (без их аргументов)");
-            ans.AddAnswer("exit : завершить программу (без сохранения в файл)");
+            ans.AddAnswer("help : \u0432\u044B\u0432\u0435\u0441\u0442\u0438 \u0441\u043F\u0440\u0430\u0432\u043A\u0443 \u043F\u043E \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u043C \u043A\u043E\u043C\u0430\u043D\u0434\u0430\u043C");
+            ans.AddAnswer("execute_script file_name : \u0441\u0447\u0438\u0442\u0430\u0442\u044C \u0438 \u0438\u0441\u043F\u043E\u043B\u043D\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442 \u0438\u0437 \u0443\u043A\u0430\u0437\u0430\u043D\u043D\u043E\u0433\u043E \u0444\u0430\u0439\u043B\u0430. \u0412 \u0441\u043A\u0440\u0438\u043F\u0442\u0435 \u0441\u043E\u0434\u0435\u0440\u0436\u0430\u0442\u0441\u044F \u043A\u043E\u043C\u0430\u043D\u0434\u044B \u0432 \u0442\u0430\u043A\u043E\u043C \u0436\u0435 \u0432\u0438\u0434\u0435, \u0432 \u043A\u043E\u0442\u043E\u0440\u043E\u043C \u0438\u0445 \u0432\u0432\u043E\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u0438\u043D\u0442\u0435\u0440\u0430\u043A\u0442\u0438\u0432\u043D\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435.");
+            ans.AddAnswer("history : \u0432\u044B\u0432\u0435\u0441\u0442\u0438 \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0435 7 \u043A\u043E\u043C\u0430\u043D\u0434 (\u0431\u0435\u0437 \u0438\u0445 \u0430\u0440\u0433\u0443\u043C\u0435\u043D\u0442\u043E\u0432)");
+            ans.AddAnswer("exit : \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044C \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0443 (\u0431\u0435\u0437 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u0432 \u0444\u0430\u0439\u043B)");
             for (Commandable comman : commands) {
                 ans.AddAnswer(comman.getName() + comman.getDescription());
             }
@@ -56,7 +56,7 @@ public class CommandManager {
             return;
         }
         else if(commandMsg.getCommandName().trim().equals("history")){
-            ans.AddAnswer("история:");
+            ans.AddAnswer("\u0438\u0441\u0442\u043E\u0440\u0438\u044F:");
             for (int i = 0; i<7; i++){
                 if (History[i]=="") break;
                 ans.AddAnswer(History[i]);
@@ -71,7 +71,7 @@ public class CommandManager {
             }
             else{
                 ans.AddStatus(Status.ERROR);
-                Main.logger.error("Введите имя файла");
+                Main.logger.error("\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0438\u043C\u044F \u0444\u0430\u0439\u043B\u0430");
             }
         }
         else if (!commandMsg.getCommandName().trim().equals("")){
@@ -91,8 +91,8 @@ public class CommandManager {
                 }
             }
             if (!isFindCommand){
-                Main.logger.error("Нет такой команды");
-                ans.AddErrorMsg("Нет такой команды");
+                Main.logger.error("\u041D\u0435\u0442 \u0442\u0430\u043A\u043E\u0439 \u043A\u043E\u043C\u0430\u043D\u0434\u044B");
+                ans.AddErrorMsg("\u041D\u0435\u0442 \u0442\u0430\u043A\u043E\u0439 \u043A\u043E\u043C\u0430\u043D\u0434\u044B");
                 ans.AddStatus(Status.ERROR);
             }
         }
@@ -123,16 +123,16 @@ public class CommandManager {
                 break;
             }
             if (cmd[0].trim().equals("help")) {
-                ans.AddAnswer("help : вывести справку по доступным командам");
-                ans.AddAnswer("execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.");
-                ans.AddAnswer("history : вывести последние 7 команд (без их аргументов)");
-                ans.AddAnswer("exit : завершить программу (без сохранения в файл)");
+                ans.AddAnswer("help : \u0432\u044B\u0432\u0435\u0441\u0442\u0438 \u0441\u043F\u0440\u0430\u0432\u043A\u0443 \u043F\u043E \u0434\u043E\u0441\u0442\u0443\u043F\u043D\u044B\u043C \u043A\u043E\u043C\u0430\u043D\u0434\u0430\u043C");
+                ans.AddAnswer("execute_script file_name : \u0441\u0447\u0438\u0442\u0430\u0442\u044C \u0438 \u0438\u0441\u043F\u043E\u043B\u043D\u0438\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442 \u0438\u0437 \u0443\u043A\u0430\u0437\u0430\u043D\u043D\u043E\u0433\u043E \u0444\u0430\u0439\u043B\u0430. \u0412 \u0441\u043A\u0440\u0438\u043F\u0442\u0435 \u0441\u043E\u0434\u0435\u0440\u0436\u0430\u0442\u0441\u044F \u043A\u043E\u043C\u0430\u043D\u0434\u044B \u0432 \u0442\u0430\u043A\u043E\u043C \u0436\u0435 \u0432\u0438\u0434\u0435, \u0432 \u043A\u043E\u0442\u043E\u0440\u043E\u043C \u0438\u0445 \u0432\u0432\u043E\u0434\u0438\u0442 \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C \u0432 \u0438\u043D\u0442\u0435\u0440\u0430\u043A\u0442\u0438\u0432\u043D\u043E\u043C \u0440\u0435\u0436\u0438\u043C\u0435.");
+                ans.AddAnswer("history : \u0432\u044B\u0432\u0435\u0441\u0442\u0438 \u043F\u043E\u0441\u043B\u0435\u0434\u043D\u0438\u0435 7 \u043A\u043E\u043C\u0430\u043D\u0434 (\u0431\u0435\u0437 \u0438\u0445 \u0430\u0440\u0433\u0443\u043C\u0435\u043D\u0442\u043E\u0432)");
+                ans.AddAnswer("exit : \u0437\u0430\u0432\u0435\u0440\u0448\u0438\u0442\u044C \u043F\u0440\u043E\u0433\u0440\u0430\u043C\u043C\u0443 (\u0431\u0435\u0437 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u0438\u044F \u0432 \u0444\u0430\u0439\u043B)");
                 for (Commandable comman : commands) {
                     ans.AddAnswer(comman.getName() + comman.getDescription());
                 }
             }
             else if(cmd[0].trim().equals("history")){
-                ans.AddAnswer("история:");
+                ans.AddAnswer("\u0438\u0441\u0442\u043E\u0440\u0438\u044F:");
                 for (int i = 0; i<7; i++){
                     if (History[i]=="") break;
                     ans.AddAnswer(History[i]);
@@ -141,14 +141,14 @@ public class CommandManager {
             else if(cmd[0].trim().equals("execute_script")){
                 if (!cmd[1].trim().equals("")) {
                     if (openedScripts.contains(cmd[1].trim())){
-                        ans.AddErrorMsg("Попытка рекурсивно вызвать скрипт");
+                        ans.AddErrorMsg("\u041F\u043E\u043F\u044B\u0442\u043A\u0430 \u0440\u0435\u043A\u0443\u0440\u0441\u0438\u0432\u043D\u043E \u0432\u044B\u0437\u0432\u0430\u0442\u044C \u0441\u043A\u0440\u0438\u043F\u0442");
                     }
                     else {
                         ScriptMode(cmd[1].trim(), ans, user);
                     }
                 }
                 else{
-                    ans.AddErrorMsg("Введите имя файла");
+                    ans.AddErrorMsg("\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u0438\u043C\u044F \u0444\u0430\u0439\u043B\u0430");
                 }
             }
             else if (!cmd[0].trim().equals("")){
@@ -161,7 +161,7 @@ public class CommandManager {
                             isFindCommand = true;
                             rowStudyGroup = scriptManager.askGroup();
                             if (rowStudyGroup == null){
-                                ans.AddErrorMsg("Ошибка парсинга объекта из файла");
+                                ans.AddErrorMsg("\u041E\u0448\u0438\u0431\u043A\u0430 \u043F\u0430\u0440\u0441\u0438\u043D\u0433\u0430 \u043E\u0431\u044A\u0435\u043A\u0442\u0430 \u0438\u0437 \u0444\u0430\u0439\u043B\u0430");
                                 break;
                             }
                         }
@@ -170,7 +170,7 @@ public class CommandManager {
                     }
                 }
                 if (!isFindCommand){
-                    ans.AddErrorMsg("Нет такой команды: " + cmd[0]+ " " + cmd[1]);
+                    ans.AddErrorMsg("\u041D\u0435\u0442 \u0442\u0430\u043A\u043E\u0439 \u043A\u043E\u043C\u0430\u043D\u0434\u044B: " + cmd[0]+ " " + cmd[1]);
                 }
             }
             if(!cmd[0].trim().equals("")) {
@@ -181,7 +181,7 @@ public class CommandManager {
             }
 
         }
-        ans.AddAnswer("Скрипт выполнен");
+        ans.AddAnswer("\u0421\u043A\u0440\u0438\u043F\u0442 \u0432\u044B\u043F\u043E\u043B\u043D\u0435\u043D");
     }
 
 }

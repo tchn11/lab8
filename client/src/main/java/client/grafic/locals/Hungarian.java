@@ -9,5 +9,11 @@ public class Hungarian extends Local{
         LOGIN_ERROR = "Bejelentkez\u00E9si hiba";
         CONNECTION_ERROR = "Kapcsolati hiba";
         SUCCESSFUL_LOGIN = "Bejelentkezett";
+        VISUALIZATION = "Vizualiz\u00E1lja az adatokat";
+        COMMAND_MODE = "Parancsok";
+        TABLE_MODE = "Asztal";
+        RETURN = "Visszat\u00E9r\u00E9s";
+        SEND = "K\u00FCld";
+        ENTER_COMMANDS = "L\\u00E9pj be itt:";
     }
 }

@@ -212,4 +212,20 @@ public class Client {
         closeConnection();*/
     }
 
+    public AnswerMsg sendAndRet(CommandMsg msg){
+        try {
+            writeMessage(msg);
+            return readMessage();
+        } catch (ConnectionBrokenException e) {
+
+            while(!connectToServer(user.getUsername(), user.getPassword(), true).equals(LoginStates.LOGINED));
+        }
+        AnswerMsg answerMsg = new AnswerMsg();
+        answerMsg.AddErrorMsg("Connection error");
+        return answerMsg;
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

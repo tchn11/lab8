@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class AnswerMsg implements Serializable {
     private String Msg;
     private Status status;
+    private Serializable ObjAnswer;
     public AnswerMsg(){
         clearMessage();
     }
@@ -17,6 +18,7 @@ public class AnswerMsg implements Serializable {
      */
     public void clearMessage(){
         Msg = "";
+        ObjAnswer = null;
     }
 
     /**
@@ -41,6 +43,14 @@ public class AnswerMsg implements Serializable {
      */
     public void AddStatus(Status st){
         status = st;
+    }
+
+    public Serializable getObjAnswer() {
+        return ObjAnswer;
+    }
+
+    public void setObjAnswer(Serializable objAnswer) {
+        ObjAnswer = objAnswer;
     }
 
     /**

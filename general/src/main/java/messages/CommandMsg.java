@@ -12,12 +12,14 @@ public class CommandMsg implements Serializable {
     private String commandStringArgument;
     private Serializable commandObjectArgument;
     private User user;
+    private boolean isSystem;
 
     public CommandMsg(String commandNm, String commandSA, Serializable commandOA, User usr) {
         user = usr;
         commandName = commandNm;
         commandStringArgument = commandSA;
         commandObjectArgument = commandOA;
+        isSystem = false;
     }
 
     /**
@@ -47,5 +49,13 @@ public class CommandMsg implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void makeSystem(){
+        isSystem = true;
+    }
+
+    public boolean checkSystem(){
+        return isSystem;
     }
 }

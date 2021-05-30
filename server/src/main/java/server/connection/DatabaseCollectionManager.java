@@ -353,7 +353,7 @@ public class DatabaseCollectionManager {
             int StudentsCount = resultSet.getInt(DatabaseManager.STUDY_GROUP_TABLE_STUDENTS_COUNT_COLUMN);
             int ExpeldStudents = resultSet.getInt(DatabaseManager.STUDY_GROUP_TABLE_EXPELLED_STUDENTS_COLUMN);
             long avMark = resultSet.getLong(DatabaseManager.STUDY_GROUP_TABLE_AVERAGE_MARK_COLUMN);
-            Main.logger.info("Ищу элемент по имени " + resultSet.getString(DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN));
+            Main.logger.info("ищу элемент по имени " + resultSet.getString(DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN));
             Semester sem = Semester.valueOf(resultSet.getString(DatabaseManager.STUDY_GROUP_TABLE_SEMESTER_COLUMN).trim());
             Coordinates cor = getCoordinatesById(getCoordinatesIdByStudyGroupId(id));
             Person per = getPersonById(getAdminIdByStudyGroupId(id));

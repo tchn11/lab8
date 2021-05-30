@@ -21,7 +21,7 @@ public class Main {
     public static final int PORT = 1820;
     public static final int CONNECTION_TIMEOUT = 60000;
     public static final int MAX_CONNECTIONS = 3;
-    public static final String DATABASE_HOST = "jdbc:postgresql://pg:5432/studs";
+    public static final String DATABASE_HOST = "jdbc:postgresql://localhost:8594/studs";
     public static final String DATABASE_USER = "s314929";
     public static final String DATABASE_PASS = "ooo222";
 

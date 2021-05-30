@@ -1,6 +1,5 @@
 package server.commands;
 
-import com.sun.rowset.internal.Row;
 import general.data.RowStudyGroup;
 import general.data.StudyGroup;
 import general.data.User;
@@ -35,6 +34,6 @@ public class AddIfMaxCommand implements Commandable{
 
     @Override
     public String getDescription() {
-        return " {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции";
+        return " {element} : \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043D\u043E\u0432\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u0432 \u043A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u044E, \u0435\u0441\u043B\u0438 \u0435\u0433\u043E \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u043F\u0440\u0435\u0432\u044B\u0448\u0430\u0435\u0442 \u0437\u043D\u0430\u0447\u0435\u043D\u0438\u0435 \u043D\u0430\u0438\u0431\u043E\u043B\u044C\u0448\u0435\u0433\u043E \u044D\u043B\u0435\u043C\u0435\u043D\u0442\u0430 \u044D\u0442\u043E\u0439 \u043A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u0438";
     }
 }

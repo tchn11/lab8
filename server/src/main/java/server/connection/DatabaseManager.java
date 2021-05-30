@@ -89,6 +89,9 @@ public class DatabaseManager {
 
     private void connectToDataBase() {
         try {
+            Tunnel tunnel = new Tunnel("se.ifmo.ru", user, password,
+                    2222, "pg", 8594, 5432);
+            tunnel.connect();
             Class.forName(JDBC_DRIVER);
             base = DriverManager.getConnection(url, user, password);
             Main.logger.info("Соединение с базой данных установлено.");

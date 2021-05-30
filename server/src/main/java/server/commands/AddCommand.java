@@ -31,7 +31,7 @@ public class AddCommand implements Commandable{
 
     @Override
     public String getDescription() {
-        return " {element} : добавить новый элемент в коллекцию";
+        return " {element} : \u0434\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043D\u043E\u0432\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u0432 \u043A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u044E";
     }
 
     @Override
@@ -39,8 +39,8 @@ public class AddCommand implements Commandable{
         RowStudyGroup sg = (RowStudyGroup) obArg;
         StudyGroup studyGroup = databaseCollectionManager.insertStudyGroup(sg, user);
         collectionManager.update();
-        Main.logger.info("Добавлен новый элемент в коллекцию: " + studyGroup.toString());
-        ans.AddAnswer("Успешно добавлен элемент в коллекцию:\n" + studyGroup.toString());
+        Main.logger.info("\u0414\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u043D\u043E\u0432\u044B\u0439 \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u0432 \u043A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u044E: " + studyGroup.toString());
+        ans.AddAnswer("\u0423\u0441\u043F\u0435\u0448\u043D\u043E \u0434\u043E\u0431\u0430\u0432\u043B\u0435\u043D \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u0432 \u043A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u044E:\n" + studyGroup.toString());
         return true;
     }
 }

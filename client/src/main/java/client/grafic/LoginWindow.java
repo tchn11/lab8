@@ -7,9 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+
 import client.grafic.locals.*;
 
-public class Interface extends JFrame {
+public class LoginWindow extends JFrame {
+
     private Local local;
     private JButton button = new JButton();
 
@@ -20,26 +23,26 @@ public class Interface extends JFrame {
 
     private JTextField inputLogin = new JTextField("", 1);
     private JLabel login = new JLabel();
-    private JTextField inputPassword = new JTextField("", 1);
+    private JPasswordField inputPassword = new JPasswordField("", 1);
     private JLabel password = new JLabel();
     private JCheckBox isRegistered = new JCheckBox();
     private JLabel info = new JLabel("");
     private Client client;
 
-    public Interface(Client cl){
+    public LoginWindow(Client cl){
         super("Login window");
 
         local = new Russian();
 
         this.setBounds(100,100,600,600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setMinimumSize(new Dimension(500, 500));
 
         client = cl;
 
         setLocal();
 
-        isRegistered.setSelected(false);
+        isRegistered.setSelected(true);
 
         inputLogin.setMaximumSize(new Dimension(400, 25));
         inputPassword.setMaximumSize(new Dimension(400, 25));
@@ -95,16 +98,24 @@ public class Interface extends JFrame {
         info.setText("");
     }
 
+    private void closeMe(){
+        super.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+    }
+
     class ButtonLoginPressedListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            LoginStates ans = client.connectToServer(inputLogin.getText(), inputLogin.getText(), isRegistered.isSelected());
+            LoginStates ans = client.connectToServer(inputLogin.getText().trim(), inputPassword.getText().trim(), isRegistered.isSelected());
             if (ans.equals(LoginStates.CONNECTION_ERROR))
                 info.setText(local.CONNECTION_ERROR);
             if (ans.equals(LoginStates.LOGINED))
+            {
                 info.setText(local.SUCCESSFUL_LOGIN);
+                MainWindow mainWindow = new MainWindow(local, client, getRec());
+                mainWindow.setVisible(true);
+                closeMe();
+            }
             if (ans.equals(LoginStates.LOGIN_ERROR))
                 info.setText(local.LOGIN_ERROR);
-
         }
     }
 
@@ -134,6 +145,10 @@ public class Interface extends JFrame {
             local = new Hungarian();
             setLocal();
         }
+    }
+
+    public Rectangle getRec(){
+        return this.getBounds();
     }
 
 }
