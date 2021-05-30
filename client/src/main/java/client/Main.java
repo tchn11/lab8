@@ -2,6 +2,7 @@ package client;
 
 import client.console.ConsoleManager;
 import client.grafic.Interface;
+import client.grafic.locals.English;
 
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -38,7 +39,8 @@ public class Main {
         }
         ConsoleManager consoleManager = new ConsoleManager(scanner);
         Client client = new Client(host, port, recconectAtmpts, timeout, consoleManager);
-        Interface inter = new Interface();
+        new English();
+        Interface inter = new Interface(client);
         inter.setVisible(true);
         //client.run();
     }

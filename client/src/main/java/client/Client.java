@@ -1,6 +1,7 @@
 package client;
 
 import client.console.ConsoleManager;
+import client.states.LoginStates;
 import general.data.RowStudyGroup;
 import general.data.User;
 import general.exeptions.ConnectionBrokenException;
@@ -51,7 +52,7 @@ public class Client {
      * Connect client to server
      * @return is closed successfully or not
      */
-    private boolean connectToServer(){
+    public LoginStates connectToServer(String login, String password, boolean isRegistered){
         try {
             if (attempts > 0)
                 print("Попытка переподключиться");
@@ -61,38 +62,37 @@ public class Client {
             serverWriter = new ObjectOutputStream(socket.getOutputStream());
             serverReader = new ObjectInputStream(socket.getInputStream());
             ConsoleManager.print("Вы уже зарегестрированы?");
-            if(consoleManager.askYesOrNo()){
-                user = consoleManager.askUser();
+            user = new User(login, password);
+            if(isRegistered){
                 CommandMsg msg = new CommandMsg("login", "", null ,user);
                 writeMessage(msg);
             }
             else {
-                user = consoleManager.askUser();
                 CommandMsg msg = new CommandMsg("register", "", null, user);
                 writeMessage(msg);
             }
             AnswerMsg answerMsg = (AnswerMsg) serverReader.readObject();
             if (answerMsg.getStatus().equals(Status.FINE)) {
                 print("Вход в аккаунт произведен");
-                return true;
+                return LoginStates.LOGINED;
             }else {
                 print(answerMsg.getMessage());
-                return false;
+                return LoginStates.LOGIN_ERROR;
             }
         } catch (UnknownHostException e) {
             printErr("Неизвестный хост: " + serverHost + "\n");
-            return false;
+            return LoginStates.CONNECTION_ERROR;
         } catch (IOException exception) {
             printErr("Ошибка открытия порта " + serverPort + "\n");
-            return false;
+            return LoginStates.CONNECTION_ERROR;
         } catch (ClassNotFoundException e) {
             print("Ошибка авторизации");
-            return false;
+            return LoginStates.CONNECTION_ERROR;
         } catch (ConnectionBrokenException e) {
             printErr("Произошел разрыв соединения");
         }
         print("Порт успешно открыт.");
-        return true;
+        return LoginStates.LOGINED;
     }
 
     /**
@@ -145,7 +145,7 @@ public class Client {
      * Main function witch get command and send.
      */
     public void run(){
-        boolean work = true;
+        /*boolean work = true;
         print("Подключаюсь к серверу");
         while (!connectToServer()) {
             if(attempts > connectionAttempts){
@@ -209,7 +209,7 @@ public class Client {
                 }
             }
         }
-        closeConnection();
+        closeConnection();*/
     }
 
 }
