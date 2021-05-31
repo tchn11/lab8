@@ -41,4 +41,7 @@ public abstract class Local{
     public String SEND_BUTTON;
 
     public String ENTER_SEMESTER;
+
+    public String MAP_LEGEND;
+
 }

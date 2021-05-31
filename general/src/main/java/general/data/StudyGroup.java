@@ -104,16 +104,16 @@ public class StudyGroup implements Serializable {
     @Override
     public String toString() {
         return "\u0423\u0447\u0435\u0431\u043D\u0430\u044F \u0433\u0440\u0443\u043F\u043F\u0430 {" +
-                "ID = " + id.toString() +
-                ", \u0438\u043C\u044F = '" + name + '\'' +
-                ", \u041A\u043E\u043E\u0440\u0434\u0438\u043D\u0430\u0442\u044B = " + coordinates.toString() +
-                ", \u0414\u0430\u0442\u0430 \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F = " + creationDate.toString() +
-                ", \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0441\u0442\u0443\u0434\u0435\u043D\u0442\u043E\u0432 = " + studentsCount.toString() +
-                ", \u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043E\u0442\u0447\u0438\u0441\u043B\u0435\u043D\u043D\u044B\u0445 \u0441\u0442\u0443\u0434\u0435\u043D\u0442\u043E\u0432 = " + expelledStudents.toString() +
-                ", \u0421\u0440\u0435\u0434\u043D\u044F\u044F \u043E\u0446\u0435\u043D\u043A\u0430 = " + averageMark.toString() +
-                ", \u0421\u0435\u043C\u0435\u0441\u0442\u0440 = " + semesterEnum.toString() +
-                ", \u0410\u0434\u043C\u0438\u043D = " + groupAdmin.toString() +
-                ", \u0414\u043E\u0431\u0430\u0432\u0438\u043B \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C = " + user.getUsername() +
+                "ID = " + id.toString() + "\n" +
+                "\u0438\u043C\u044F = '" + name + '\'' + "\n"+
+                "\u041A\u043E\u043E\u0440\u0434\u0438\u043D\u0430\u0442\u044B = " + coordinates.toString() + "\n"+
+                "\u0414\u0430\u0442\u0430 \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F = " + creationDate.toString() + "\n"+
+                "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u0441\u0442\u0443\u0434\u0435\u043D\u0442\u043E\u0432 = " + studentsCount.toString() + "\n"+
+                "\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043E\u0442\u0447\u0438\u0441\u043B\u0435\u043D\u043D\u044B\u0445 \u0441\u0442\u0443\u0434\u0435\u043D\u0442\u043E\u0432 = " + expelledStudents.toString() + "\n"+
+                "\u0421\u0440\u0435\u0434\u043D\u044F\u044F \u043E\u0446\u0435\u043D\u043A\u0430 = " + averageMark.toString() + "\n"+
+                "\u0421\u0435\u043C\u0435\u0441\u0442\u0440 = " + semesterEnum.toString() + "\n"+
+                "\u0410\u0434\u043C\u0438\u043D = " + groupAdmin.toString() + "\n"+
+                "\u0414\u043E\u0431\u0430\u0432\u0438\u043B \u043F\u043E\u043B\u044C\u0437\u043E\u0432\u0430\u0442\u0435\u043B\u044C = " + user.getUsername() + "\n"+
                 '}';
     }
 }

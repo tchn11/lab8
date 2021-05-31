@@ -41,5 +41,7 @@ public class Hungarian extends Local{
         TIME_DATE_FORMAT = "uuuu-MM-dd HH:mm";
 
         ENTER_SEMESTER = "F\u00E9l\u00E9v a v\u00E1ltozatokb\u00F3l:";
+
+        MAP_LEGEND = "T\u00E9rk\u00E9p legenda:";
     }
 }

@@ -41,5 +41,7 @@ public class Turkish extends Local{
         TIME_DATE_FORMAT = "dd-MM-uuuu HH:mm";
 
         ENTER_SEMESTER = "Varyantlardan d\u00F6nem:";
+
+        MAP_LEGEND = "Harita efsanesi";
     }
 }

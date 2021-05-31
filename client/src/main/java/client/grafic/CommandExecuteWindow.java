@@ -40,7 +40,7 @@ public class CommandExecuteWindow extends JFrame {
         setLocal();
 
         this.setBounds(rec);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(500, 500));
         this.setVisible(true);
 
@@ -120,12 +120,13 @@ public class CommandExecuteWindow extends JFrame {
     }
 
     private void closeMe(){
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         super.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
 
     class SetReturn implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            mainWindow.showMe(getRec());
+            mainWindow.showMe(getRec(), local);
             closeMe();
         }
     }

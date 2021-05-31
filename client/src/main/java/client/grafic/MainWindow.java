@@ -128,7 +128,8 @@ public class MainWindow extends JFrame {
 
     class SetViz implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
+            VisualWindow visualWindow = new VisualWindow(client, local, getMe(), getRec());
+            hideMe();
         }
     }
 
@@ -147,7 +148,8 @@ public class MainWindow extends JFrame {
     private void hideMe(){
         this.setVisible(false);
     }
-    public void showMe(Rectangle size){
+    public void showMe(Rectangle size, Local loc){
+        local = loc;
         this.setBounds(size);
         this.setVisible(true);
         setLocal();

@@ -43,5 +43,7 @@ public class English extends Local{
         TIME_DATE_FORMAT = "dd-MM-uuuu HH:mm";
 
         ENTER_SEMESTER = "Semester from variants:";
+
+        MAP_LEGEND = "Map legend: ";
     }
 }
