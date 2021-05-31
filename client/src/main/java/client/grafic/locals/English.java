@@ -1,8 +1,5 @@
 package client.grafic.locals;
 
-import javax.swing.*;
-import java.time.format.DateTimeFormatter;
-
 public class English extends Local{
     {
         LOGIN = "Login";
@@ -45,5 +42,35 @@ public class English extends Local{
         ENTER_SEMESTER = "Semester from variants:";
 
         MAP_LEGEND = "Map legend: ";
+
+        COORDINATES_COLUMN = "Coordinates";
+
+        NAME_COLUMN = "Name";
+
+        ADD_DATE_COLUMN = "Add date";
+
+        COUNT_COLUMN = "Students count";
+
+        EXPELLED_COLUMN = "Expelled students count";
+
+        AVEREGE_COLUMN = "Average mark";
+
+        SEMESTER_COLUMN = "Semester";
+
+        ADMIN_NAME_COLUMN = "Admin name";
+
+        ADMIN_BIRTHDAY_COLUMN = "Admin birthday";
+
+        ADMIN_WEIGHT_COLUMN = "Admin weight";
+
+        ADMIN_PASSPORT_COLUMN = "Admin passport";
+
+        OWNER_COLUMN = "Owner";
+
+        ADD_BUTTON = "Add";
+
+        REMOVE_BUTTON = "Remove";
+
+        FILTER_BUTTON = "Filter";
     }
 }

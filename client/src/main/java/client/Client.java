@@ -212,7 +212,7 @@ public class Client {
         closeConnection();*/
     }
 
-    public AnswerMsg sendAndRet(CommandMsg msg){
+    synchronized public AnswerMsg sendAndRet(CommandMsg msg){
         try {
             writeMessage(msg);
             return readMessage();

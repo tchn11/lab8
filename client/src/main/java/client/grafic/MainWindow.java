@@ -142,7 +142,8 @@ public class MainWindow extends JFrame {
 
     class SetTab implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
+            TableWindow tab = new TableWindow(client, local, getMe(), getRec());
+            hideMe();
         }
     }
     private void hideMe(){

@@ -43,5 +43,36 @@ public class Turkish extends Local{
         ENTER_SEMESTER = "Varyantlardan d\u00F6nem:";
 
         MAP_LEGEND = "Harita efsanesi";
+
+
+        COORDINATES_COLUMN = "koordinatlar";
+
+        NAME_COLUMN = "\u0130sim Soyisim";
+
+        ADD_DATE_COLUMN = "Tarih ekle";
+
+        COUNT_COLUMN = "\u00D6\u011Frenciler say\u0131l\u0131r";
+
+        EXPELLED_COLUMN = "Okuldan at\u0131lan \u00F6\u011Frencilerin say\u0131s\u0131";
+
+        AVEREGE_COLUMN = "Ortalama not";
+
+        SEMESTER_COLUMN = "D\u00F6nem";
+
+        ADMIN_NAME_COLUMN = "y\u00F6netici ad\u0131";
+
+        ADMIN_BIRTHDAY_COLUMN = "y\u00F6netici do\u011Fum g\u00FCn\u00FC";
+
+        ADMIN_WEIGHT_COLUMN = "Y\u00F6netici a\u011F\u0131rl\u0131\u011F\u0131";
+
+        ADMIN_PASSPORT_COLUMN = "y\u00F6netici pasaportu";
+
+        OWNER_COLUMN = "Sahip";
+
+        ADD_BUTTON = "Ekle";
+
+        REMOVE_BUTTON = "Kald\u0131rmak";
+
+        FILTER_BUTTON = "Filtrele";
     }
 }

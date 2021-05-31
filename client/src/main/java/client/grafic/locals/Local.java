@@ -44,4 +44,33 @@ public abstract class Local{
 
     public String MAP_LEGEND;
 
+    public String COORDINATES_COLUMN;
+
+    public String NAME_COLUMN;
+
+    public String ADD_DATE_COLUMN;
+
+    public String COUNT_COLUMN;
+
+    public String EXPELLED_COLUMN;
+
+    public String AVEREGE_COLUMN;
+
+    public String SEMESTER_COLUMN;
+
+    public String ADMIN_NAME_COLUMN;
+
+    public String ADMIN_BIRTHDAY_COLUMN;
+
+    public String ADMIN_WEIGHT_COLUMN;
+
+    public String ADMIN_PASSPORT_COLUMN;
+
+    public String OWNER_COLUMN;
+
+    public String ADD_BUTTON;
+
+    public String REMOVE_BUTTON;
+
+    public String FILTER_BUTTON;
 }
