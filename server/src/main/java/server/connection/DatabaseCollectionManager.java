@@ -196,9 +196,18 @@ public class DatabaseCollectionManager {
                     throw new SQLException();
                 Main.logger.info("Выполнен запрос UPDATE_STUDY_GROUP_NAME_BY_ID.");
             }
-            if (sgRaw.getCoordinates() != null) {
-                preparedUpdateSGCoordinatesByIdStatement.setLong(1, sgRaw.getCoordinates().getX());
-                preparedUpdateSGCoordinatesByIdStatement.setInt(2, sgRaw.getCoordinates().getY());
+            if (sgRaw.getCoordinates().getX() != -1 || sgRaw.getCoordinates().getY() != -1) {
+                Coordinates prevCoord = null;
+                if (sgRaw.getCoordinates().getX() == -1 || sgRaw.getCoordinates().getY() == -1)
+                    prevCoord = getCoordinatesById(getCoordinatesIdByStudyGroupId(sgId));
+                if (sgRaw.getCoordinates().getX() == -1)
+                    preparedUpdateSGCoordinatesByIdStatement.setLong(1, prevCoord.getX());
+                else
+                    preparedUpdateSGCoordinatesByIdStatement.setLong(1, sgRaw.getCoordinates().getX());
+                if (sgRaw.getCoordinates().getY() == -1)
+                    preparedUpdateSGCoordinatesByIdStatement.setInt(2, prevCoord.getY());
+                else
+                    preparedUpdateSGCoordinatesByIdStatement.setInt(2, sgRaw.getCoordinates().getY());
                 preparedUpdateSGCoordinatesByIdStatement.setLong(3, getCoordinatesIdByStudyGroupId(sgId));
                 if (preparedUpdateSGCoordinatesByIdStatement.executeUpdate() == 0)
                     throw new SQLException();
@@ -232,11 +241,29 @@ public class DatabaseCollectionManager {
                     throw new SQLException();
                 Main.logger.info("Выполнен запрос UPDATE_SEMESTER.");
             }
-            if (sgRaw.getGroupAdmin() != null) {
-                preparedUpdateSGAdminByIdStatement.setString(1, sgRaw.getGroupAdmin().getName());
-                preparedUpdateSGAdminByIdStatement.setTimestamp(2, Timestamp.valueOf(sgRaw.getGroupAdmin().getBirthday()));
-                preparedUpdateSGAdminByIdStatement.setLong(3, sgRaw.getGroupAdmin().getWeight());
-                preparedUpdateSGAdminByIdStatement.setString(4, sgRaw.getGroupAdmin().getPassportID());
+            if (sgRaw.getGroupAdmin().getName() != null || sgRaw.getGroupAdmin().getBirthday() != null ||
+                    sgRaw.getGroupAdmin().getWeight() != -1 || sgRaw.getGroupAdmin().getPassportID() != null) {
+                Person oldAdm = null;
+                if (sgRaw.getGroupAdmin().getName() == null || sgRaw.getGroupAdmin().getBirthday() == null ||
+                        sgRaw.getGroupAdmin().getWeight() == -1 || sgRaw.getGroupAdmin().getPassportID() == null)
+                    oldAdm = getPersonById(getAdminIdByStudyGroupId(sgId));
+
+                if (sgRaw.getGroupAdmin().getName() == null)
+                    preparedUpdateSGAdminByIdStatement.setString(1, oldAdm.getName());
+                else
+                    preparedUpdateSGAdminByIdStatement.setString(1, sgRaw.getGroupAdmin().getName());
+                if (sgRaw.getGroupAdmin().getBirthday() == null)
+                    preparedUpdateSGAdminByIdStatement.setTimestamp(2, Timestamp.valueOf(oldAdm.getBirthday()));
+                else
+                    preparedUpdateSGAdminByIdStatement.setTimestamp(2, Timestamp.valueOf(sgRaw.getGroupAdmin().getBirthday()));
+                if (sgRaw.getGroupAdmin().getWeight() == -1)
+                    preparedUpdateSGAdminByIdStatement.setLong(3, oldAdm.getWeight());
+                else
+                    preparedUpdateSGAdminByIdStatement.setLong(3, sgRaw.getGroupAdmin().getWeight());
+                if (sgRaw.getGroupAdmin().getPassportID() == null)
+                    preparedUpdateSGAdminByIdStatement.setString(4, oldAdm.getPassportID());
+                else
+                    preparedUpdateSGAdminByIdStatement.setString(4, sgRaw.getGroupAdmin().getPassportID());
                 preparedUpdateSGAdminByIdStatement.setLong(5, getAdminIdByStudyGroupId(sgId));
                 if (preparedUpdateSGAdminByIdStatement.executeUpdate() == 0)
                     throw new SQLException();

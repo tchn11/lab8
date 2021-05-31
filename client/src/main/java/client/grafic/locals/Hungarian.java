@@ -14,6 +14,32 @@ public class Hungarian extends Local{
         TABLE_MODE = "Asztal";
         RETURN = "Visszat\u00E9r\u00E9s";
         SEND = "K\u00FCld";
-        ENTER_COMMANDS = "L\\u00E9pj be itt:";
+        ENTER_COMMANDS = "L\u00E9pj be itt:";
+
+        ENTER_NAME = "N\u00E9v:";
+
+        ENTER_X = "X:";
+
+        ENTER_Y = "Y:";
+
+        ENTER_STUDENTS_COUNT = "A di\u00E1kok sz\u00E1m\u00EDtanak:";
+
+        ENTER_EXPELLED_STUDENTS = "A kiz\u00E1rt hallgat\u00F3k sz\u00E1m\u00EDtanak:";
+
+        ENTER_AVEREGE_MARK = "\u00C1tlagos jegy:";
+
+        ENTER_ADMIN_NAME = "Rendszergazda neve:";
+
+        ENTER_ADMIN_BIRHDAY = "Rendszergazda sz\u00FClet\u00E9snapja form\u00E1tumban:";
+
+        ENTER_ADMIN_WEIGTHT = "Rendszergazda s\u00FAlya:";
+
+        ENTER_PASSPORT_ID = "Rendszergazda \u00FAtlev\u00E9l azonos\u00EDt\u00F3ja:";
+
+        SEND_BUTTON = "K\u00FCld";
+
+        TIME_DATE_FORMAT = "uuuu-MM-dd HH:mm";
+
+        ENTER_SEMESTER = "F\u00E9l\u00E9v a v\u00E1ltozatokb\u00F3l:";
     }
 }

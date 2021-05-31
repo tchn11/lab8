@@ -133,16 +133,34 @@ public class CommandExecuteWindow extends JFrame {
     class SetSend implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             String command = commandField.getText();
+            commandField.setText("");
             if (command.equals(""))
                 return;
             String[] sendComm = (command.trim()+ " ").split(" ", 2);
-            AnswerMsg answerMsg = client.sendAndRet(new CommandMsg(sendComm[0], sendComm[1], null, client.getUser()));
-
-            answerEarea.setText(answerEarea.getText() +  answerMsg.getMessage());
+            if (sendComm[0].trim().equals("add") || sendComm[0].trim().equals("add_if_max")){
+                RowGroupAsker rowGroupAsker =
+                        new RowGroupAsker(local, new CommandMsg(sendComm[0], sendComm[1], null, client.getUser()), client, getMee(), false);
+                rowGroupAsker.setVisible(true);
+            }else if (sendComm[0].trim().equals("update")){
+                RowGroupAsker rowGroupAsker =
+                        new RowGroupAsker(local, new CommandMsg(sendComm[0], sendComm[1], null, client.getUser()), client, getMee(), true);
+                rowGroupAsker.setVisible(true);
+            }else {
+                AnswerMsg answerMsg = client.sendAndRet(new CommandMsg(sendComm[0], sendComm[1], null, client.getUser()));
+                addText(answerMsg.getMessage());
+            }
         }
     }
 
     public Rectangle getRec(){
         return this.getBounds();
+    }
+
+    public void addText(String text){
+        answerEarea.setText(answerEarea.getText() + text);
+    }
+
+    public CommandExecuteWindow getMee(){
+        return this;
     }
 }

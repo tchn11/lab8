@@ -1,5 +1,7 @@
 package client.grafic.locals;
 
+import javax.swing.*;
+
 public abstract class Local{
     public String LOGIN;
     public String PASSWORD;
@@ -16,4 +18,27 @@ public abstract class Local{
     public String SEND;
     public String ENTER_COMMANDS;
 
+    public String ENTER_NAME;
+
+    public String ENTER_X;
+
+    public String ENTER_Y;
+
+    public String ENTER_STUDENTS_COUNT;
+
+    public String ENTER_EXPELLED_STUDENTS;
+
+    public String ENTER_AVEREGE_MARK;
+
+    public String ENTER_ADMIN_NAME;
+
+    public String ENTER_ADMIN_BIRHDAY;
+
+    public String ENTER_ADMIN_WEIGTHT;
+
+    public String ENTER_PASSPORT_ID;
+
+    public String SEND_BUTTON;
+
+    public String ENTER_SEMESTER;
 }

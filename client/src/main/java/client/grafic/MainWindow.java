@@ -3,6 +3,7 @@ package client.grafic;
 import client.Client;
 import client.Main;
 import client.grafic.locals.*;
+import com.sun.rowset.internal.Row;
 
 import javax.swing.*;
 import java.awt.*;
@@ -149,6 +150,7 @@ public class MainWindow extends JFrame {
     public void showMe(Rectangle size){
         this.setBounds(size);
         this.setVisible(true);
+        setLocal();
     }
 
     private MainWindow getMe(){

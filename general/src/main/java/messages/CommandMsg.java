@@ -58,4 +58,8 @@ public class CommandMsg implements Serializable {
     public boolean checkSystem(){
         return isSystem;
     }
+
+    public void setCommandObjectArgument (Serializable ob){
+        commandObjectArgument = ob;
+    }
 }

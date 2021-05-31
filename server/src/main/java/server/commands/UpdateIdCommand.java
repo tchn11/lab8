@@ -63,9 +63,8 @@ public class UpdateIdCommand implements Commandable{
             return false;
         }
         databaseCollectionManager.updateStudyGroupById(id, sg);
-        collectionManager.update();
-        Main.logger.info("\u0423\u0441\u043F\u0435\u0448\u043D\u043E \u0438\u0437\u043C\u0435\u043D\u0435\u043D \u044D\u043B\u0435\u043C\u0435\u043D\u0442 \u043A\u043E\u043B\u043B\u0435\u043A\u0446\u0438\u0438 " + sg.toString());
         ans.AddAnswer("\u0423\u0441\u043F\u0435\u0448\u043D\u043E \u0438\u0437\u043C\u0435\u043D\u0435\u043D\u043E");
+        collectionManager.update();
         return true;
     }
 }
